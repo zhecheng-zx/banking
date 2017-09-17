@@ -5,6 +5,10 @@ import { createRouter } from './router'
 import { sync } from 'vuex-router-sync'
 import titleMixin from './util/title'
 import * as filters from './util/filters'
+import ElementUi from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
+
+Vue.use(ElementUi)
 // mixin 处理标题
 Vue.mixin(titleMixin)
 
@@ -21,7 +25,6 @@ export function createApp () {
 
   // 同步router和vuex,注册 `store.state.route`
   sync(store, router)
-
   // 创建应用实例.
   // 在这里，我们将路由器、存储和ssr上下文注入到所有子组件中，
   // 在其他组件里可以使用，`this.$router` and `this.$store`.

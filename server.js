@@ -9,6 +9,7 @@ const favicon = require('serve-favicon')
 const compression = require('compression')
 const resolve = file => path.resolve(__dirname, file)
 const { createBundleRenderer } = require('vue-server-renderer')
+const proxy = require('http-proxy-middleware')
 
 const isProd = process.env.NODE_ENV === 'production'
 const useMicroCache = process.env.MICRO_CACHE !== 'false'
@@ -120,10 +121,18 @@ function render (req, res) {
   })
 }
 
+var options = {
+  target: 'http://172.168.30.113:8080/credit',
+  changeOrigin: true,
+  pathRewrite: {
+    '^/api': '/'
+  }
+};
+var exampleProxy = proxy(options);
+app.use('/api', exampleProxy);
 app.get('*', isProd ? render : (req, res) => {
   readyPromise.then(() => render(req, res))
 })
-
 const port = process.env.PORT || 8080
 app.listen(port, () => {
   Log.log(`服务启动成功： localhost:${port}`)

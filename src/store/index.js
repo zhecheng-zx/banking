@@ -9,6 +9,8 @@ Vue.use(Vuex)
 export function createStore () {
   return new Vuex.Store({
     state: {
+      userName: '',
+      isLogin: false,
       activeType: null,
       itemsPerPage: 20,
       items: {/* [id: number]: Item */},
@@ -17,6 +19,13 @@ export function createStore () {
         index: [],
         antiFraud: [],
         creditRating: [],
+        postLoan: [],
+        riskOpinion: [],
+        precisionMarketing: [],
+        accountManager: [],
+        APIManager: [],
+        searchLog: [],
+        safetyInfo: [],
         top: [/* number */],
         new: [],
         show: [],

@@ -19,5 +19,14 @@ export default {
 
   SET_USER: (state, { id, user }) => {
     Vue.set(state.users, id, user || false) /* false means user not found */
+  },
+
+  /*设置登录状态*/
+  SET_LOGIN_STATE: (state, { loginStatus }) => {
+    state.isLogin = loginStatus
+  },
+  /**设置用户名*/
+  SET_USER_NAME: (state, { userName }) => {
+    state.userName = userName
   }
 }

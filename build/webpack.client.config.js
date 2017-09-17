@@ -51,19 +51,19 @@ if (process.env.NODE_ENV === 'production') {
         {
           urlPattern: '/',
           handler: 'networkFirst'
-        },
-        {
-          urlPattern: /\/(top|new|show|ask|jobs)/,
-          handler: 'networksFirst'
-        },
-        {
-          urlPattern: '/item/:id',
-          handler: 'networksFirst',
-        },
-        {
-          urlPattern: '/user/:id',
-          handler: 'networkFirst'
         }
+        // {
+        //   urlPattern: /\/(top|new|show|ask|jobs)/,
+        //   handler: 'networksFirst'
+        // },
+        // {
+        //   urlPattern: '/item/:id',
+        //   handler: 'networksFirst',
+        // },
+        // {
+        //   urlPattern: '/user/:id',
+        //   handler: 'networkFirst'
+        // }
       ]
     })
   )

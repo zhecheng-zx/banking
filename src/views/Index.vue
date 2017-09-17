@@ -5,87 +5,91 @@
   <div>
     <div class="container">
       <h1 class="text-center one-title">
-        <img src="/public/images/server.png" alt="icon" />
-        产品与服务
+        <img :src="displayedItems.top.icon" alt="icon" />
+        {{ displayedItems.top.title }}
       </h1>
       <div class="row">
-        <div class="col-md-6">
-          <div class="thumbnail background bg1">
-            <h3>反欺诈</h3>
-            <p>多维度交叉识别欺诈行为，助您提升反欺诈识别能力。</p>
+        <div v-for="item in displayedItems.top.content" :class="item.col">
+          <div v-if="item.col != 'col-md-12'" :class="item.background">
+            <h3>{{ item.name }}<i v-if="item.sub_title" :class="item.sub_icon"></i><em v-if="item.sub_title">({{ item.type }})</em></h3>
+            <p>{{ item.profile }}</p>
             <div class="model-icon">
-              <img src="/public/images/thumbnail_1.png" alt="icon">
+              <img :src="item.center_icon" alt="icon">
+              <h3 v-if="item.sub_title" class="text-tag">({{ item.type }})</h3>
+              <div v-if="item.crown" :class="item.crown_icon"></div>
+              <div v-if="item.btn_flag" class="btn-box btn-big-box">
+                <!--<router-link class="btn btn-danger" v-for="btn_item in item.btn_group" :to="btn_item.link">{{ btn_item.name }}</router-link>-->
+                <button type="button" class="btn btn-danger" v-for="btn_item in item.btn_group" @click="clickType(btn_item)" v-loading.fullscreen.lock="fullscreenLoading">{{ btn_item.name }}</button>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col-md-6">
-          <div class="thumbnail background bg2">
-            <h3>信用评估</h3>
-            <p>信用判定，授信额度。</p>
-            <div class="model-icon">
-              <img src="/public/images/thumbnail_2.png" alt="icon">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <div class="thumbnail background bg3">
-            <h3>贷后风险监测</h3>
-            <p>从放款开始检测客户还款情况，授信跟进</p>
-            <div class="model-icon">
-              <img src="/public/images/thumbnail_3.png" alt="icon">
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="thumbnail background bg4">
-            <h3>风险舆情</h3>
-            <p>海量数据进行采集和智能分析，稳准狠快地把互联网读懂，读薄</p>
-            <div class="model-icon">
-              <img src="/public/images/thumbnail_4.png" alt="icon">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="thumbnail thumbnail-center  background bg5">
-            <img src="/public/images/thumbnail_5.png" alt="icon"/>
+          <div v-else :class="item.background">
+            <img :src="item.center_icon" alt="icon"/>
             <div class="describe">
-              <h3>精准营销</h3>
-              <p>消费画像，针对现有客户提高活跃度，提升粘性</p>
+              <h3>{{ item.name }}</h3>
+              <p>{{ item.profile }}</p>
+            </div>
+            <div v-if="item.btn_flag" class="btn-box btn-big-box">
+              <router-link class="btn btn-danger" v-for="btn_item in item.btn_group" :to="btn_item.link">{{ btn_item.name }}</router-link>
             </div>
           </div>
         </div>
       </div>
       <h1 class="text-center one-title">
-        <img src="/public/images/top.png" alt="icon" />
-        我们的优势
+        <img :src="displayedItems.bottom.icon" alt="icon" />
+        {{ displayedItems.bottom.title }}
       </h1>
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3" v-for="item in displayedItems.bottom.content">
           <div class="thumbnail thumbnail-small">
-            <img src="/public/images/thumbnail_6.png" alt="icon" />
-            <p>具备庞大的数据库和优质的第三方数据源，数据覆盖全国</p>
+            <img :src="item.icon" alt="icon" />
+            <p>{{ item.content }}</p>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="thumbnail thumbnail-small">
-            <img src="/public/images/thumbnail_7.png" alt="icon" />
-            <p>智能机器学习模型，结果精准且有特点，输出不仅包括量化分值，还包括描述性评判结果</p>
+      </div>
+    </div>
+    <div class="modal fade dialog" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">我的定制方案</h4>
+          </div>
+          <div class="modal-body">
+            <el-form ref="form" :model="form" label-width="0">
+              <el-form-item v-for="(item,index) in customData">
+                <el-col :span="18">
+                  <el-radio-group v-model="form.id">
+                    <el-radio :label="item.id">{{item.name}}</el-radio>
+                  </el-radio-group>
+                </el-col>
+                <el-col :span="6">
+                  <el-button type="danger" class="isChecked" @click="setChecked(item,index)" :disabled="connive[index]">设置默认</el-button>
+                  <!--<el-button type="danger" class="isChecked" v-else>设置默认</el-button>-->
+                </el-col>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="modal-footer">
+            <!--<button type="button" class="btn btn-default btn-lg">关闭</button>-->
+            <el-button type="danger" size="large" @click="confirm()">下一步</el-button>
+            <el-button type="danger" size="large" @click="myModalDis()">取  消</el-button>
           </div>
         </div>
-        <div class="col-md-3">
-          <div class="thumbnail thumbnail-small">
-            <img src="/public/images/thumbnail_8.png" alt="icon" />
-            <p>数据响应毫秒级</p>
+      </div>
+    </div>
+    <div class="modal fade dialog" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel2">我的定制方案</h4>
           </div>
-        </div>
-        <div class="col-md-3">
-          <div class="thumbnail thumbnail-small">
-            <img src="/public/images/thumbnail_9.png" alt="icon" />
-            <p>深度了解金融行业需求及其痛点</p>
+          <div class="modal-body">
+            <p class="text-center">您未设置定制方案，请先设置定制方案！</p>
+          </div>
+          <div class="modal-footer">
+            <el-button type="danger" size="large" @click="link_set()">立即设置</el-button>
           </div>
         </div>
       </div>
@@ -101,12 +105,18 @@
   export default{
     name: 'index-group',
     props: {
-        type: String
+      type: String
     },
     data () {
       return {
-        transition: 'slide-right',
-        displayedItems: this.$store.getters.activeIndexPage
+        displayedItems: this.$store.getters.activeIndexPage,
+        form: {
+          id: ''
+        },
+        customData:[],
+        connive:[],
+        isSingle: true,
+        fullscreenLoading: false
       }
     },
     components: {},
@@ -119,17 +129,112 @@
       }
     },
     methods: {
-        loadItems () {
-          this.$bar.start()
-          this.$store.dispatch("INDEX_SETUP_FILE", {
-            type: this.type
-          }).then(() => {
-            this.$router.replace(`/${this.type}`)
-            this.displayedItems = this.$store.getters.activeIndexPage
-            console.log(this.displayedItems,"***");
-            this.$bar.finish()
-          })
+      loadItems () {
+        this.$bar.start()
+        this.$store.dispatch("INDEX_SETUP_FILE", {
+          type: this.type
+        }).then(() => {
+          this.$router.replace(`/${this.type}`)
+          this.displayedItems = this.$store.getters.activeIndexPage
+          this.$bar.finish()
+        })
+      },
+      clickType(param){
+        /*判断是否是标准版查询，如果是直接跳转配置文件中的路由*/
+        let _this = this;
+        _this.fullscreenLoading = true
+        if(param.mode == 'standard'){
+          _this.$router.push({path: param.link})
+          _this.fullscreenLoading = false
+        }else{
+          if(param.type == 'single'){
+            _this.isSingle = true
+          }else{
+              _this.isSingle = false
+          }
+          if(param.link.indexOf('antiFraud') != -1){
+            _this.$store.dispatch('ANTIFRAUD_CUSTOM',(res)=>{}).then((res,req)=>{
+              if(res.success){
+                _this.connive = []
+                if(res.data.length>0){
+                    let data = []
+                    for(var i in res.data){
+                      let obj = {}
+                      obj.id = res.data[i].id
+                      obj.name = res.data[i].name
+                      if(res.data[i].connive == '是'){
+                        obj.connive = true
+                        _this.connive.push(true)
+                        _this.form.id = res.data[i].id
+                      }else{
+                        obj.connive = false
+                        _this.connive.push(false)
+                      }
+                      data.push(obj)
+                    }
+                  _this.customData = data
+                  $("#myModal").modal('show');
+                }else{
+                  $("#myModal2").modal('show');
+                }
+              }else{
+                _this.$notify({
+                  title: '提示信息',
+                  message: res.msg,
+                  type: 'error',
+                  duration: '1000'
+                })
+              }
+              _this.fullscreenLoading = false
+            }).catch((error)=>{
+              _this.fullscreenLoading = false
+              _this.$notify({
+                title: '提示信息',
+                message: error.message,
+                type: 'error',
+                duration: '1000'
+              });
+            })
+          }
         }
+      },
+      setChecked(params,inx){
+        let _this = this
+        _this.form.id = params.id
+        let param = this.form
+        _this.$store.dispatch('ANTIFRAUD_CUSTOM_SETUP',{ param },(res)=>{}).then((res,req)=>{
+          _this.connive.map(function (item,index) {
+            _this.connive[index] = false
+            _this.connive[inx] = true
+          })
+          this.$message({message:'默认方案，设置' + (res.success?'成功':'失败'),type:(res.success?'success':'error')});
+        });
+      },
+      confirm(){
+        this.myModalDis()
+        sessionStorage.setItem('customTempId',this.form.id)
+        if(this.isSingle){
+          this.$router.push({path: '/antiFraud/customization_search'})
+        }else{
+          this.$router.push({path: '/antiFraud/customization_batch_search'})
+        }
+      },
+      myModalDis(){
+        $("#myModal").modal('hide');
+        $("#myModal2").modal('hide');
+      },
+      link_set(){
+        this.myModalDis()
+        /*设置来源地址，添加定制方案完成时使用*/
+        sessionStorage.setItem('from_page','/antiFraud')
+        this.$router.push({path: '/antiFraud/custom_template'})
+      },
+      isCustomTrue(){
+
+      },
+      isCustomFalse(){
+
+      }
     },
     mounted () {
 

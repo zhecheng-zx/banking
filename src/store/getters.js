@@ -30,5 +30,11 @@ export default {
   },
   activeIndexPage (state, getters) {
     return getters.activeIndexs
+  },
+  getIsLogin (state) {
+    return state.isLogin
+  },
+  getUserName (state) {
+    return state.userName
   }
 }

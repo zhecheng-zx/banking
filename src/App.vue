@@ -4,21 +4,23 @@
       <div class="container">
         <p class="pull-left nav-tips">客服电话：400 2324 4523（周一至周五 AM9:00-PM18:00）</p>
         <p class="pull-right login-link">
-          您好，<span>155****5304</span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);">退出</a>
+          <router-link v-if="isLogin" to="/accountManager">您好，<span>{{ userName }}</span></router-link>
+          <router-link v-if="isLogin" to="/login">退出</router-link>
+          <router-link v-else to="/login" @click="logout()">登录</router-link>
         </p>
       </div>
     </div>
     <div class="navbar header header--fixed">
       <div class="container">
         <div class="navbar-header logo">
-          <router-link to="/" exact class="navbar-brand"><img src="/public/images/logo.png" /><span>金融大数据智能决策服务平台</span></router-link>
+          <router-link to="/index" exact class="navbar-brand"><img src="/public/images/logo.png" /><span>金融大数据智能决策服务平台</span></router-link>
         </div>
-        <ul class="nav navbar-nav navbar-right">
+        <ul v-if="isLogin" class="nav navbar-nav navbar-right">
           <li><router-link to="/antiFraud">反欺诈</router-link></li>
           <li><router-link to="/creditRating">信用评估</router-link></li>
-          <li><router-link to="/show">贷后风险监测</router-link></li>
-          <li><router-link to="/ask">风险舆情</router-link></li>
-          <li><router-link to="/job">精准营销</router-link></li>
+          <li><router-link to="/postLoan">贷后风险监测</router-link></li>
+          <li><router-link to="/riskOpinion">风险舆情</router-link></li>
+          <li><router-link to="/precisionMarketing">精准营销</router-link></li>
         </ul>
       </div>
     </div>
@@ -35,6 +37,51 @@
     </div>
   </div>
 </template>
-<style lang="scss">
+<script>
+  export default {
+    data(){
+      return {
+        isLogin: this.$store.getters.getIsLogin,
+        userName: this.$store.getters.getUserName
+      }
+    },
+    computed:{
 
-</style>
+    },
+    beforeMount(){
+      let _this=this;
+      if(this.$route.path==='\/login'){
+        this.$store.dispatch("MANAGER_LOGIN_STATE",{
+          loginStatus:false
+        }).then(() => {
+          isLog();
+        })
+      }else{
+        this.$store.dispatch("MANAGER_LOGIN_STATE",{
+          loginStatus:true
+        }).then(() => {
+          isLog();
+        })
+      }
+      var isLog = ()=>{
+        _this.isLogin = _this.$store.getters.getIsLogin;
+      }
+      this.userName = localStorage.getItem('userName')
+    },
+    beforeRouteEnter(to, from, next) {
+    },
+    watch: {
+      $route(){
+        if(this.$route.path==='\/login'){
+          this.isLogin = false
+        }else{
+          this.isLogin = true
+        }
+        this.userName = localStorage.getItem('userName')
+      }
+    },
+    method:{
+
+    }
+  }
+</script>

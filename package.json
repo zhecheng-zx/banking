@@ -12,13 +12,14 @@
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.config.js --progress --hide-modules"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "compression": "^1.6.2",
     "cross-env": "^4.0.0",
     "element-ui": "^1.4.3",
     "es6-promise": "^4.1.0",
     "express": "^4.15.2",
     "extract-text-webpack-plugin": "^2.1.0",
-    "firebase": "^3.7.2",
+    "http-proxy-middleware": "^0.17.4",
     "lru-cache": "^4.0.2",
     "serve-favicon": "^2.4.1",
     "vue": "^2.4.1",
@@ -35,6 +36,7 @@
     "babel-preset-env": "^1.4.0",
     "css-loader": "^0.28.0",
     "file-loader": "^0.11.1",
+    "font-awesome": "^4.7.0",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "glob": "^7.1.1",
     "node-sass": "^4.5.3",

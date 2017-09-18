@@ -18,6 +18,8 @@ const data = {
           sub_title: false,
           sub_icon: '',
           btn_flag:false,
+          linkFlag: true,
+          linkTo: 'antiFraud',
           btn_group:[]
         },{
           col: "col-md-6",
@@ -31,6 +33,8 @@ const data = {
           sub_title: false,
           sub_icon: '',
           btn_flag:false,
+          linkFlag: true,
+          linkTo: 'creditRating',
           btn_group:[]
         },{
           col: "col-md-6",
@@ -44,6 +48,8 @@ const data = {
           sub_title: false,
           sub_icon: '',
           btn_flag:false,
+          linkFlag: true,
+          linkTo: 'postLoan',
           btn_group:[]
         },{
           col: "col-md-6",
@@ -57,6 +63,8 @@ const data = {
           sub_title: false,
           sub_icon: '',
           btn_flag:false,
+          linkFlag: true,
+          linkTo: 'riskOpinion',
           btn_group:[]
         },{
           col: "col-md-12",
@@ -70,6 +78,8 @@ const data = {
           sub_title: false,
           sub_icon: '',
           btn_flag:false,
+          linkFlag: true,
+          linkTo: 'precisionMarketing',
           btn_group:[]
         }
       ]

@@ -57,7 +57,7 @@
                   <router-link to="/forgotPassword">忘记密码</router-link>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="danger" size="large" @click="submitForm('param')" v-loading.fullscreen.lock="fullscreenLoading">提交</el-button>
+                  <el-button type="danger" size="large" @click="submitForm('param')" v-loading.fullscreen.lock="fullscreenLoading">立即登录</el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -96,7 +96,7 @@
       .mb0{
         margin-bottom: 0;
         a{
-          font-size: 10px;
+          font-size: 14px;
           color:#565656;
           &:hover{
             color:#777;
@@ -248,6 +248,7 @@
                 _this.fullscreenLoading = false;
               }
             }).catch((error)=>{
+              _this.fullscreenLoading = false;
               _this.$notify({
                 title: '提示信息',
                 message: '网络异常，请刷新后再试！',

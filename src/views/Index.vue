@@ -68,6 +68,9 @@
                   <!--<el-button type="danger" class="isChecked" v-else>设置默认</el-button>-->
                 </el-col>
               </el-form-item>
+              <el-form-item>
+                <el-button type="text" size="large" @click="link_set()">设置新的方案>></el-button>
+              </el-form-item>
             </el-form>
           </div>
           <div class="modal-footer">
@@ -202,11 +205,24 @@
         let _this = this
         _this.form.id = params.id
         let param = this.form
-        _this.$store.dispatch('ANTIFRAUD_CUSTOM_SETUP',{ param },(res)=>{}).then((res,req)=>{
-          _this.connive.map(function (item,index) {
-            _this.connive[index] = false
-            _this.connive[inx] = true
+        _this.connive[inx] = true
+        _this.$store.dispatch('ANTIFRAUD_CUSTOM_SETUP',{ param }).then((res,req)=>{
+          _this.connive.map((item,index) => {
+              if(index == inx){
+                _this.connive[index] = true
+              }else{
+                _this.connive[index] = false
+              }
           })
+          /*
+          *
+          *
+          * 修改->反欺诈选择定制方案时，设置默认 按钮不随着变化的问题
+          * 解决方案和form表单提交——>配合分页出现的问题 解决方案一致
+          * 都是通过jQuery的 extend方法实现
+          * */
+          let connive3 = $.extend([],[],_this.connive)
+          _this.connive = connive3
           this.$message({message:'默认方案，设置' + (res.success?'成功':'失败'),type:(res.success?'success':'error')});
         });
       },

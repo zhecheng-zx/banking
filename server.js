@@ -122,7 +122,7 @@ function render (req, res) {
 }
 
 var options = {
-  target: 'http://172.168.30.113:8080/credit',
+  target: 'http://172.168.30.217:8999/credit',
   changeOrigin: true,
   pathRewrite: {
     '^/api': '/'

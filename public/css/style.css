@@ -102,6 +102,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {color:#b8b8b8;}
 }
 .header .navbar-nav>li>a{
   color:#ffffff;
+  font-size: 18px;
   padding-top: 30px;
   padding-bottom: 30px;
   -webkit-transition: all .5s ease-out;
@@ -967,6 +968,14 @@ input[type=file] {
   margin-left: -29px;
   left: 15.8%;
 }
+/**
+* 表格的左侧和右侧固定的列
+* .el-table__fixed, .el-table__fixed-right
+*/
+.block-item .el-table__fixed,
+.block-item .el-table__fixed-right{
+  overflow-y: hidden !important;
+}
 /*动画*/
 @keyframes rotateIn {
   from{
@@ -979,46 +988,3 @@ input[type=file] {
      opacity:1;
    }
 }
-
-
-/*!*修改或制作 bootstrap 按钮样式（下面注释的部分都需要修改）*!*/
-/*.btn-danger {*/
-  /*color: #fff;*/
-  /*background-color: #d9534f;!*默认背景颜色*!*/
-  /*border-color: #d43f3a;!*默认边框颜色*!*/
-/*}*/
-
-/*.btn-danger.focus,*/
-/*.btn-danger:focus {*/
-  /*color: #fff;*/
-  /*background-color: #c9302c;!*focus的背景颜色*!*/
-  /*border-color: #761c19;!*focus的边框颜色*!*/
-/*}*/
-
-/*.btn-danger:hover {*/
-  /*color: #fff;*/
-  /*background-color: #c9302c;!*鼠标移入的背景颜色*!*/
-  /*border-color: #ac2925;!*鼠标移入的背景颜色*!*/
-/*}*/
-
-/*.btn-danger:active {*/
-  /*color: #fff;*/
-  /*background-color: #c9302c;!*active的背景颜色*!*/
-  /*border-color: #ac2925;!*active的边框颜色*!*/
-/*}*/
-/*.btn-danger:active:focus,*/
-/*.btn-danger:active:hover{*/
-  /*color: #fff;*/
-  /*background-color: #ac2925;!*active时focus（hover）的背景颜色*!*/
-  /*border-color: #761c19;!*active时focus（hover）的边框颜色*!*/
-/*}*/
-
-/*.btn-danger:active{*/
-  /*background-image: none*/
-/*}*/
-
-/*.btn-danger[disabled]:focus,*/
-/*.btn-danger[disabled]:hover{*/
-  /*background-color: #d9534f;!*禁用时focus（hover）的背景颜色*!*/
-  /*border-color: #d43f3a;!*禁用时focus（hover）的边框颜色*!*/
-/*}*/

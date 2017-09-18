@@ -76,11 +76,11 @@
         msg: '标准_输入',
         fullscreenLoading:false,
         param:{
-          realname: '常鹏',
-          idNumber: '210803197902190530',
-          mobile: '18610568188',
-          cardNo: '6226090110185085',
-          payPwd: '000000'
+          realname: '',
+          idNumber: '',
+          mobile: '',
+          cardNo: '',
+          payPwd: ''
         },
         checked: false
       }

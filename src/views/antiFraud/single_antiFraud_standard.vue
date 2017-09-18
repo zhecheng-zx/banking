@@ -70,10 +70,9 @@
         msg: '标准_输入',
         fullscreenLoading:false,
         param:{
-          name: '常鹏',
-          idNo: '210803197902190530',
-          mobile: '18610568188',
-          arctic: '小型汽车',
+          name: '',
+          idNo: '',
+          mobile: '',
           payPassword: ''
         },
         checked: false
@@ -88,7 +87,6 @@
           param.name = _this.param.name
           param.idNo = _this.param.idNo
           param.mobile = _this.param.mobile
-          param.arctic = _this.param.arctic
           param.payPassword = hex_md5(_this.param.payPassword)
           _this.fullscreenLoading = true
           _this.$store.dispatch('ANTIFRAUD_SQUERYONE',{

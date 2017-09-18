@@ -77,11 +77,11 @@
         msg: '标准_输入',
         fullscreenLoading:false,
         param:{
-          name: '常鹏',
-          idNo: '210803197902190530',
-          mobile: '18610568188',
-          cardNo: '6226090110185085',
-          payPassword: '000000'
+          name: '',
+          idNo: '',
+          mobile: '',
+          cardNo: '',
+          payPassword: ''
         },
         checked: false
       }

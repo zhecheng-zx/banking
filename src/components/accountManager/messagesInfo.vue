@@ -14,37 +14,41 @@
           style="width: 100%">
           <el-table-column
             align="center"
-            prop="id"
+            prop="message.header"
             label="标题"
             width="180">
             <template scope="scope">
-              <router-link size="small" :to="'/accountManager/messagesInfo/' + (scope.row.id)">{{ scope.row.id }}</router-link>
+              <router-link size="small" :to="'/accountManager/messagesInfo/' + (scope.row.message.id)">{{ scope.row.message.header }}</router-link>
             </template>
           </el-table-column>
           <el-table-column
             align="center"
-            prop="type"
+            prop="message.content"
             label="消息内容"
             width="">
           </el-table-column>
           <el-table-column
             align="center"
-            prop="date"
+            prop="message.createDate"
             label="发送时间"
             width="180">
           </el-table-column>
           <el-table-column
             align="center"
-            prop="status"
+            prop="isRead"
             label="状态"
             width="100">
+            <template scope="scope">
+              <el-button type="text" size="small" v-if="scope.row.isRead==0">未读</el-button>
+              <el-button type="text" size="small" disabled v-if="scope.row.isRead==1">已读</el-button>
+            </template>
           </el-table-column>
           <el-table-column
             align="center"
             width="100"
             label="操作">
             <template scope="scope">
-              <el-button type="text" size="small"><span class="text-red">删除</span></el-button>
+              <el-button type="text" size="small" @click.native.prevent="deleteRow(scope.$index, tableData, scope.row.message.id)"><span class="text-red">删除</span></el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -52,11 +56,10 @@
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
+            :current-page="params.pageNum"
+            :page-size="params.pageSize"
+            layout="total, prev, pager, next, jumper"
+            :total="total">
           </el-pagination>
         </div>
       </div>
@@ -153,70 +156,14 @@
   export default{
     data () {
       return {
-        tableData: [{
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '4567645674454545',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '未读',
-          date: '2017/08/02 00:00:00'
-        }],
+        tableData: [],
+        params: {
+          pageNum: 1,
+          pageSize: 10
+        },
+        total: 0,
         oneLoad: true,
         articleId: Number(this.$store.state.route.params.id) || -1,
-        currentPage: 1,
         content:{title:''}
       }
     },
@@ -231,6 +178,7 @@
       if (this.$root._isMounted) {
         this.loadItems(this.articleId)
       }
+      this.getList()
       this.content = {
         title: this.articleId,
         content: 40
@@ -251,10 +199,61 @@
         console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.params.pageNum = val
+        this.getList()
+      },
+      deleteRow(index, rows, ids) {
+          let _this = this,
+          param = {}
+          param.id = ids
+        _this.$store.dispatch('MESSAGE_DEL',{ param }).then((res,req) => {
+          if(res.success){
+            rows.splice(index, 1);
+          }
+          _this.$notify({
+            title: '提示信息',
+            message: res.msg,
+            type: res.success?'success':'error',
+            duration: '2000'
+          })
+        }).catch((error)=>{
+            _this.$notify({
+            title: '提示信息',
+            message: error.message,
+            type: 'error',
+            duration: '2000'
+          })
+        })
+      },
+      getList(){
+        let _this = this,
+        param = {}
+        param = $.extend({},{},_this.params)
+        _this.$store.dispatch('MESSAGE',{ param }).then((res,req) => {
+          if(res.success){
+            _this.tableData=res.data.page.list
+            _this.tableData.map(function (item,index) {
+              item.message.createDate = item.message.createDate? new Date(item.message.createDate).Format('yyyy-MM-dd h:mm:ss') : ''
+            })
+            _this.total = res.data.page.total
+          }else{
+            _this.$notify({
+              title: '提示信息',
+              message: res.msg,
+              type: 'error',
+              duration: '2000'
+            })
+          }
+        }).catch((error)=>{
+          _this.$notify({
+            title: '提示信息',
+            message: error.message,
+            type: 'error',
+            duration: '2000'
+          })
+        })
       },
       loadItems (to = this.page, from = -1) {
-        console.log("***")
         this.$bar.start()
         this.articleId = to
         this.content = {

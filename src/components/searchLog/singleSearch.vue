@@ -287,7 +287,7 @@
         let _this = this,param = {}
         param = $.extend({},{},_this.ruleForm)
         param.startDate = ''+ param.startDate!='' ? new Date(param.startDate).Format('yyyy-MM-dd'): ''
-        param.endDate = ''+ param.startDate!='' ? new Date(param.endDate).Format('yyyy-MM-dd'): ''
+        param.endDate = ''+ param.endDate!='' ? new Date(param.endDate).Format('yyyy-MM-dd'): ''
         _this.$store.dispatch('RECORDS_SINGLE',{ param }).then((res,req) => {
         if(res.success){
           _this.tableData=res.data.page.list

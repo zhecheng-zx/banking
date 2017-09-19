@@ -122,10 +122,10 @@ function render (req, res) {
 }
 
 var options = {
-  target: 'http://172.168.30.217:8999/credit',
+  target: 'http://172.168.30.1:8090/credit',
   changeOrigin: true,
   pathRewrite: {
-    '^/api': '/'
+    '^/api': ''
   }
 };
 var exampleProxy = proxy(options);

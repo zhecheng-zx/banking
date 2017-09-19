@@ -224,6 +224,7 @@ export function marketing_batch(param) {
 export function marketing_bResult(param) {
   return api.post('/api/marketing/bResult', param)
 }
+/*****************个人中心开始**********************/
 /**
  * 获取批量查询页的列表
  * @param param
@@ -240,7 +241,78 @@ export function records_batch(param) {
 export function records_single(param) {
   return api.post('/api/records/single', param)
 }
-
+/**
+ * 统计账户余额
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function recharge_amount(param) {
+  return api.post('/api/recharge/amount', param)
+}
+/**
+ * 查询最新的充值记录列表
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function recharge_latest(param) {
+  return api.get('/api/recharge/latest', param)
+}
+/**
+ * 条件检索充值列表
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function recharge_search(param) {
+  return api.post('/api/recharge/search', param)
+}
+/**
+ * 根据交易ID获取交易明细
+ * @param param String
+ * @returns {*|AxiosPromise}
+ */
+export function trading_detail(param) {
+  return api.get('/api/trading/detail/'+param)
+}
+/**
+ * 查询N条最新的交易记录
+ * @param param String
+ * @returns {*|AxiosPromise}
+ */
+export function trading_latest(param) {
+  return api.get('/api/trading/latest', param)
+}
+/**
+ * 条件查询交易列表
+ * @param param String
+ * @returns {*|AxiosPromise}
+ */
+export function trading_search(param) {
+  return api.post('/api/trading/search', param)
+}
+/**
+ * 消息中心列表
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function message(param) {
+  return api.post('/api/message', param)
+}
+/**
+ * 删除消息
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function message_del(param) {
+  return api.post('/api/message/del', param)
+}
+/**
+ * 查看消息
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function message_show(param) {
+  return api.post('/api/message/show', param)
+}
 
 // export function getYZM() {
 //   let url = ''

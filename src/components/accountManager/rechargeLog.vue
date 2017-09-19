@@ -11,32 +11,34 @@
         <label class="label">充值时间：</label>
         <div class="inline-block w220">
           <el-date-picker
-            v-model="value1"
+            v-model="form.dateStart"
             type="date"
-            placeholder="选择日期"
-            :picker-options="pickerOptions0">
+            placeholder="开始日期"
+            :picker-options="pickerOptions0"
+            :editable="false">
           </el-date-picker>
         </div>
         <label class="control-label">-</label>
         <div class="inline-block w220">
           <el-date-picker
-            v-model="value2"
+            v-model="form.dateEnd"
             type="date"
-            placeholder="选择日期"
-            :picker-options="pickerOptions0">
+            placeholder="结束日期"
+            :picker-options="pickerOptions0"
+            :editable="false">
           </el-date-picker>
         </div>
         <div class="inline-block">
-          <el-button type="danger"> 查询 </el-button>
+          <el-button type="danger" @click="confirmForm()"> 查询 </el-button>
         </div>
       </div>
       <div class="block-item noborder">
         <div class="inline-box">
-          <a class="inline-block" href="javascript:void(0);">今天</a>|
-          <a class="inline-block" href="javascript:void(0);">最近一周</a>|
-          <a class="inline-block" href="javascript:void(0);">最近一个月</a>|
-          <a class="inline-block" href="javascript:void(0);">最近三个月</a>|
-          <a class="inline-block" href="javascript:void(0);">最近半年</a>
+          <a class="inline-block" href="javascript:void(0);" @click="quickSearch(0)" :class="current===0?'active':''">今天</a>|
+          <a class="inline-block" href="javascript:void(0);" @click="quickSearch(1)" :class="current===1?'active':''">最近一周</a>|
+          <a class="inline-block" href="javascript:void(0);" @click="quickSearch(2)" :class="current===2?'active':''">最近一个月</a>|
+          <a class="inline-block" href="javascript:void(0);" @click="quickSearch(3)" :class="current===3?'active':''">最近三个月</a>|
+          <a class="inline-block" href="javascript:void(0);" @click="quickSearch(4)" :class="current===4?'active':''">最近半年</a>
         </div>
       </div>
       <div class="block-item last-table">
@@ -48,36 +50,35 @@
             align="center"
             prop="id"
             label="流水号"
-            width="180">
+            width="220">
           </el-table-column>
           <el-table-column
             align="center"
-            prop="type"
+            prop="types"
             label="充值方式"
-            width="180">
+            width="200">
           </el-table-column>
           <el-table-column
             align="center"
-            prop="jinE"
-            label="充值金额"
-            width="180">
+            prop="amount"
+            label="充值金额(元)"
+            width="200">
           </el-table-column>
           <el-table-column
             align="center"
-            prop="date"
+            prop="createTime"
             label="充值时间">
           </el-table-column>
         </el-table>
-        <p class="text-right pd35">充值统计：累计充值<span class="text-red">6</span>笔，共充值<span class="text-red">3000.00</span>元</p>
+        <p class="text-right pd35">充值统计：累计充值<span class="text-red">{{ statistics.count }}</span>笔，共充值<span class="text-red">{{ statistics.sum }}</span>元</p>
         <div class="pagination-box clearfix">
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
+            :current-page="params.pageNum"
+            :page-size="params.pageSize"
+            layout="total, prev, pager, next, jumper"
+            :total="total">
           </el-pagination>
         </div>
       </div>
@@ -160,65 +161,29 @@
   export default{
     data () {
       return {
-        tableData: [{
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '12312312312312312',
-          type: '线下转账',
-          jinE: '5000.00元',
-          date: '2017/08/02 00:00:00'
-        }],
+        tableData: [],
         pickerOptions0: {
           disabledDate(time) {
-            return time.getTime() < Date.now() - 8.64e7;
+            return time.getTime() > Date.now();
           }
         },
-        currentPage: 1,
-        value1: '',
-        value2: ''
+        form: {
+          dateStart: '',
+          dateEnd: '',
+          dateType: '',
+          pageNum: 1,
+          pageSize: 10
+        },
+        params: {
+          dateStart: '',
+          dateEnd: '',
+          dateType: '',
+          pageNum: 1,
+          pageSize: 10
+        },
+        total: 0,
+        statistics:{},
+        current: ''
       }
     },
     components: {},
@@ -227,11 +192,71 @@
         console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.params.pageNum = val
+        this.getList()
+      },
+      confirmForm(){
+        let _this = this
+        if(!_this.form.dateStart && !_this.form.dateEnd){
+          _this.$message({
+            message: '请输入选择正确的时间段',
+            type: 'warning'
+          })
+          return
+        }else if(new Date(_this.form.dateStart).getTime() > new Date(_this.form.dateEnd)){
+          _this.$message({
+            message: '开始时间不能大于结束时间',
+            type: 'warning'
+          })
+          return
+        }
+        _this.params = $.extend({},_this.params,_this.form)
+        _this.getList()
+      },
+      getList(){
+        let _this = this,
+          param = {}
+          param = $.extend({},{},_this.params)
+          param.dateStart = ''+ param.dateStart!='' ? new Date(param.dateStart).Format('yyyy-MM-dd'): ''
+          param.dateEnd = ''+ param.dateEnd!='' ? new Date(param.dateEnd).Format('yyyy-MM-dd'): ''
+        _this.$store.dispatch('RECHARGE_SEARCH',{ param }).then((res,req) => {
+          if(res.success){
+            _this.tableData=res.data.page.list
+            _this.total = res.data.page.total
+            _this.statistics = res.data.statistics
+          }else{
+            _this.$notify({
+              title: '提示信息',
+              message: res.msg,
+              type: 'error',
+              duration: '2000'
+            })
+          }
+        }).catch((error)=>{
+          _this.$notify({
+            title: '提示信息',
+            message: error.message,
+            type: 'error',
+            duration: '2000'
+          })
+        })
+      },
+      quickSearch(param){
+        let _this = this
+        _this.current = param
+        _this.form = {
+          dateStart: '',
+          dateEnd: '',
+          dateType: param,
+          pageNum: 1,
+          pageSize: 10
+        }
+        _this.params = $.extend({},_this.form)
+        _this.getList();
       }
     },
     mounted () {
-
+      this.getList()
     }
   }
 </script>

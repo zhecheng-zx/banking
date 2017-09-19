@@ -33,7 +33,16 @@ import {
   antifraud_custom_getArgs,
   antifraud_createTemplate,
   records_single,
-  records_batch
+  records_batch,
+  recharge_amount,
+  recharge_latest,
+  recharge_search,
+  trading_detail,
+  trading_latest,
+  trading_search,
+  message,
+  message_del,
+  message_show
 } from '../api'
 import data from '../data/index-data-config'
 import userInfoData from '../data/userInfo-data-config'
@@ -400,6 +409,132 @@ export default {
    */
   RECORDS_SINGLE: ({commit, dispatch, state}, {param}) => {
     return records_single(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 统计账户余额
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  RECHARGE_AMOUNT: ({commit, dispatch, state}, {param}) => {
+    return recharge_amount(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 查询最新的充值记录列表
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  RECHARGE_LATEST: ({commit, dispatch, state}, {param}) => {
+    return recharge_latest(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 条件检索充值列表
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  RECHARGE_SEARCH: ({commit, dispatch, state}, {param}) => {
+    return recharge_search(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 根据交易ID获取交易明细
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  TRADING_DETAIL: ({commit, dispatch, state}, {param}) => {
+    return trading_detail(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 查询N条最新的交易记录
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  TRADING_LATEST: ({commit, dispatch, state}, {param}) => {
+    return trading_latest(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 条件查询交易列表
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  TRADING_SEARCH: ({commit, dispatch, state}, {param}) => {
+    return trading_search(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 消息中心列表
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  MESSAGE: ({commit, dispatch, state}, {param}) => {
+    return message(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 删除消息
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  MESSAGE_DEL: ({commit, dispatch, state}, {param}) => {
+    return message_del(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 查看消息
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  MESSAGE_SHOW: ({commit, dispatch, state}, {param}) => {
+    return message_show(param).then((res,req)=>{
       return res
     })
   }

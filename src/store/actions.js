@@ -5,6 +5,7 @@
 // } from '../api'
 import {
   login,
+  logout,
   antifraud_squeryone,
   antifraud_bqueryone,
   antifraud_squerytwo,
@@ -42,7 +43,8 @@ import {
   trading_search,
   message,
   message_del,
-  message_show
+  message_show,
+  antifraud_custom_charge
 } from '../api'
 import data from '../data/index-data-config'
 import userInfoData from '../data/userInfo-data-config'
@@ -79,6 +81,19 @@ export default {
   /*login*/
   LOGIN:({ commit, dispatch, state},{ param }) => {
     return login(param).then((res,req) => {
+      return res
+    })
+  },
+  /**
+   * 退出系统
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @returns {Thenable<U>|*|Promise.<TResult>|Promise<U>}
+   * @constructor
+   */
+  AUTHENTICATE_LOGOUT:({ commit, dispatch, state}) => {
+    return logout().then((res,req) => {
       return res
     })
   },
@@ -168,6 +183,11 @@ export default {
    */
   ANTIFRAUD_CUSTOM_GETPRODUCTS: ({commit, dispatch, state})=>{
     return antifraud_custom_getProducts().then((res,req) => {
+      return res
+    })
+  },
+  ANTIFRAUD_CUSTOM_CHARGE: ({commit, dispatch, state},{ param })=>{
+    return antifraud_custom_charge(param).then((res,req) => {
       return res
     })
   },

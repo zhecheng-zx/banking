@@ -67,12 +67,6 @@
             _this.amount = res.data
           }
         }).catch((error)=>{
-          _this.$notify({
-            title: '提示信息',
-            message: error.message,
-            type: 'error',
-            duration: '2000'
-          })
         })
       },
       getRechargeLatest(){
@@ -86,12 +80,6 @@
             _this.rechargeList = res.data
           }
         }).catch((error)=>{
-          _this.$notify({
-            title: '提示信息',
-            message: error.message,
-            type: 'error',
-            duration: '2000'
-          })
         })
       },
       getTradingLatest(){
@@ -105,12 +93,6 @@
             _this.tradingList = res.data
           }
         }).catch((error)=>{
-          _this.$notify({
-            title: '提示信息',
-            message: error.message,
-            type: 'error',
-            duration: '2000'
-          })
         })
       }
     },

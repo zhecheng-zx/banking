@@ -19,7 +19,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">支付金额：</label>
             <div class="col-md-5">
-              <div class="form-control-static"><strong class="text-red">2.81</strong>元</div>
+              <div class="form-control-static"><strong class="text-red">{{ price }}</strong>元</div>
             </div>
           </div>
           <div class="form-group">
@@ -60,7 +60,8 @@
         fullscreenLoading:false,
         param:{},
         resultParam:[],
-        checked: false
+        checked: false,
+        price: 0
       }
     },
     components: {},
@@ -130,10 +131,26 @@
             h('i', { style: 'color: teal' }, '用户协议')
           ])
         });
+      },
+      getPrice(){
+        let param = {},_this = this,ids = sessionStorage.getItem('customTempId')
+        param.id = parseInt(ids)
+        _this.fullscreenLoading = true
+        _this.$store.dispatch('ANTIFRAUD_CUSTOM_CHARGE',{ param }).then((res,req)=>{
+          if(res.success){
+            _this.price = res.data.toFixed(2)
+          }
+          _this.fullscreenLoading = false
+        }).catch((error)=>{
+          _this.fullscreenLoading = false
+        })
       }
     },
-    mounted () {
+    beforeMount(){
       this.loadItems()
+      this.getPrice()
+    },
+    mounted () {
     }
   }
 </script>

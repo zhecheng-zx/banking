@@ -13,6 +13,13 @@ const api = createAPI();
 export function login(param) {
   return api.post('/api/authenticate/login', param);
 }
+
+/**
+ * 退出系统
+ */
+export function logout() {
+  return api.get('/api/authenticate/logout');
+}
 /**
  * 反欺诈（标准版）单一查询
  * @param param ({name,idNo,mobile,arctic,payPassword})
@@ -264,6 +271,14 @@ export function recharge_latest(param) {
  */
 export function recharge_search(param) {
   return api.post('/api/recharge/search', param)
+}
+/**
+ * 查询定制方案价格
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function antifraud_custom_charge(param) {
+  return api.get('/api/antifraud/custom/charge', param)
 }
 /**
  * 根据交易ID获取交易明细

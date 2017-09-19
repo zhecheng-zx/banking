@@ -20,7 +20,7 @@ export function createAPI() {
     }
     return Promise.reject(res)
   }, (error) => {
-    return Promise.reject({message: '网路异常，请刷新重试！', err: error, type: 1})
+    return Promise.reject({message: '登录超时，请重新登录！', err: error, type: 1})
   })
   if (process.__API__) {
     api = process.__API__

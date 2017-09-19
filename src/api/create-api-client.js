@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Notification } from 'element-ui'
 
 let transformRequest = function (data) {
   let ret = ''
@@ -20,7 +21,23 @@ export function createAPI() {
     return Promise.reject(res)
   }, (error) => {
     // 网络异常
-    return Promise.reject({ message: '网络异常，请刷新后再试！', err: error })
+    localStorage.removeItem('userName')
+    sessionStorage.removeItem('ANTIFRAUD_SQUERYONE_tradeId')
+    sessionStorage.removeItem('_import_tradeId')
+    sessionStorage.removeItem('cost')
+    sessionStorage.removeItem('customTempId')
+    sessionStorage.removeItem('dataCount')
+    sessionStorage.removeItem('token')
+    Notification({
+      title: '提示信息',
+      message: "登录超时，请重新登录",
+      type: 'error',
+      duration: '2000'
+    });
+    setTimeout(()=>{
+      window.location.href = '/'
+    },2000)
+    return Promise.reject({ message: '登录超时，请重新登录', err: error })
   });
   if(process.__API__){
     api = process.__API__

@@ -289,18 +289,12 @@
         param.startDate = ''+ param.startDate!='' ? new Date(param.startDate).Format('yyyy-MM-dd'): ''
         param.endDate = ''+ param.endDate!='' ? new Date(param.endDate).Format('yyyy-MM-dd'): ''
         _this.$store.dispatch('RECORDS_SINGLE',{ param }).then((res,req) => {
-        if(res.success){
-          _this.tableData=res.data.page.list
-          _this.total = res.data.page.total
-        }
-      }).catch((error)=>{
-        _this.$notify({
-          title: '提示信息',
-          message: error.message,
-          type: 'error',
-          duration: '2000'
+          if(res.success){
+            _this.tableData=res.data.page.list
+            _this.total = res.data.page.total
+          }
+        }).catch((error)=>{
         })
-      })
       },
       resetForm(formName) {
         this.ruleForm2={

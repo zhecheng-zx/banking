@@ -217,12 +217,6 @@
             duration: '2000'
           })
         }).catch((error)=>{
-            _this.$notify({
-            title: '提示信息',
-            message: error.message,
-            type: 'error',
-            duration: '2000'
-          })
         })
       },
       getList(){
@@ -245,12 +239,6 @@
             })
           }
         }).catch((error)=>{
-          _this.$notify({
-            title: '提示信息',
-            message: error.message,
-            type: 'error',
-            duration: '2000'
-          })
         })
       },
       loadItems (to = this.page, from = -1) {

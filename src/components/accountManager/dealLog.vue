@@ -260,12 +260,6 @@
             })
           }
         }).catch((error)=>{
-          _this.$notify({
-            title: '提示信息',
-            message: error.message,
-            type: 'error',
-            duration: '2000'
-          })
         })
       },
       quickSearch(param){

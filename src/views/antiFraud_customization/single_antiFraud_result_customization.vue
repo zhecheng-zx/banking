@@ -84,19 +84,17 @@
         let _this = this
         _this.$store.dispatch('ANTIFRAUD_QUERYRESULT',{
           param
-          },(res)=>{
-            console.log(res,"::::::::::::::::::::::单一查询结果")
           }).then((res,req)=>{
             if(res.success){
               _this.dataBase.result = res.data.result
               _this.dataBase.param = res.data.parm
             }
-//          _this.$notify({
-//            title: '提示信息',
-//            message: res.msg,
-//            type: res.success ? 'success' : 'error',
-//            duration: '1000'
-//          });
+          _this.$notify({
+            title: '提示信息',
+            message: res.msg,
+            type: res.success ? 'success' : 'error',
+            duration: '1000'
+          });
         })
       }
     },

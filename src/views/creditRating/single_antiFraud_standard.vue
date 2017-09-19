@@ -37,7 +37,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">支付金额：</label>
             <div class="col-md-5">
-              <div class="form-control-static"><strong class="text-red">2.81</strong>元</div>
+              <div class="form-control-static"><strong class="text-red">{{ price }}</strong>元</div>
             </div>
           </div>
           <div class="form-group">
@@ -82,7 +82,8 @@
           cardNo: '',
           payPwd: ''
         },
-        checked: false
+        checked: false,
+        price: 0
       }
     },
     components: {},
@@ -102,14 +103,12 @@
           }).then((res,req)=>{
             if(res.success){
               _this.loginStatus = true
-              _this.fullscreenLoading = false
               let data = res.data
               sessionStorage.setItem("ANTIFRAUD_SQUERYONE_tradeId",data)
               _this.$router.push({path:'result'})
-            }else{
-              _this.fullscreenLoading = false
             }
-            _this.$notify({
+          _this.fullscreenLoading = false
+          _this.$notify({
               title: '提示信息',
               message: res.msg,
               type: res.success ? 'success' : 'error',
@@ -142,7 +141,23 @@
             h('i', { style: 'color: teal' }, '用户协议')
           ])
         });
-      }
+      },
+      getPrice(){
+        let param = {},_this = this
+        param.solutionId = 8
+        _this.fullscreenLoading = true
+        _this.$store.dispatch('COMPUTE_SINGLE',{ param }).then((res,req)=>{
+          if(res.success){
+          _this.price = res.data.price.toFixed(2)
+        }
+        _this.fullscreenLoading = false
+      }).catch((error)=>{
+        _this.fullscreenLoading = false
+      })
+      },
+    },
+    beforeMount(){
+      this.getPrice()
     },
     mounted () {
 

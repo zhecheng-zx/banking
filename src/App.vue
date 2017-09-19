@@ -4,9 +4,9 @@
       <div class="container">
         <p class="pull-left nav-tips">客服电话：400 2324 4523（周一至周五 AM9:00-PM18:00）</p>
         <p class="pull-right login-link">
-          <router-link v-if="isLogin" to="/accountManager">您好，<span>{{ userName }}</span></router-link>
-          <a href="/login" v-if="isLogin" @click="logout()">退出</a>
-          <router-link v-else to="/login">登录</router-link>
+          <router-link v-if="isLogin&&userName" to="/accountManager">您好，<span>{{ userName }}</span></router-link>
+          <a href="javascript:void(0);" v-if="isLogin&&userName" @click="logout()">退出</a>
+          <router-link v-else to="/">您好，欢迎来到大数据智能决策服务平台</router-link>
         </p>
       </div>
     </div>
@@ -16,7 +16,7 @@
           <router-link to="/index" v-if="isLogin" exact class="navbar-brand"><img src="/public/images/logo.png" /><span>金融大数据智能决策服务平台</span></router-link>
           <router-link to="/login" v-if="!isLogin" exact class="navbar-brand"><img src="/public/images/logo.png" /><span>金融大数据智能决策服务平台</span></router-link>
         </div>
-        <ul v-if="isLogin" class="nav navbar-nav navbar-right">
+        <ul v-if="isLogin&&userName" class="nav navbar-nav navbar-right">
           <li><router-link to="/antiFraud">反欺诈</router-link></li>
           <li><router-link to="/creditRating">信用评估</router-link></li>
           <li><router-link to="/postLoan">贷后风险监测</router-link></li>
@@ -73,6 +73,15 @@
     },
     methods:{
       logout(){
+        this.$store.dispatch("AUTHENTICATE_LOGOUT").then((res) => {
+          this.clearSession()
+          this.$router.push({path:'/login'})
+        }).catch((error)=>{
+          this.clearSession()
+          this.$router.push({path:'/login'})
+        })
+      },
+      clearSession(){
         localStorage.removeItem('userName')
         sessionStorage.removeItem('ANTIFRAUD_SQUERYONE_tradeId')
         sessionStorage.removeItem('_import_tradeId')
@@ -80,7 +89,6 @@
         sessionStorage.removeItem('customTempId')
         sessionStorage.removeItem('dataCount')
         sessionStorage.removeItem('token')
-        this.$router.push({path:'/login'})
       }
     },
     watch: {

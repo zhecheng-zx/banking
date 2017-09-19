@@ -14,7 +14,7 @@
             <label class="col-md-4 control-label">请下载模版：</label>
             <div class="col-md-5">
               <!--<el-button type="danger" :loading="btn_loading">下载模版{{fileName}}</el-button>-->
-              <router-link :to="fileName" target="_blank" class="el-button el-button--danger" :loading="btn_loading">下载模版</router-link>
+              <router-link :to="'/api/antifraud/downTemplate?customSolutionId='+customSolutionId+'&JSESSIONID='+Authorization" target="_blank" class="el-button el-button--danger" :loading="btn_loading">下载模版</router-link>
               <span class="text-red">请先下载模板，按模板要求填写需要查询的数据</span>
             </div>
           </div>
@@ -92,6 +92,8 @@
           tradeId: '',
           payPassword: ''
         },
+        Authorization: '',
+        customSolutionId: '',
         fullscreenLoading:false
       }
     },
@@ -128,33 +130,16 @@
             duration: '1000'
           })
         }).catch((error)=>{
-          _this.$notify({
-            title: '提示信息',
-            message: error.message,
-            type: 'error',
-            duration: '2000'
-          })
         _this.fullscreenLoading = false
-        })
-      },
-      getTemplateName(){
-        let param = {},
-          _this = this,
-          customSolutionId = parseInt(sessionStorage.getItem("customTempId"))
-        param.customSolutionId = customSolutionId
-        _this.$store.dispatch("ANTIFRAUD_CREATETEMPLATE",{ param },(res)=>{}).then((res,req)=> {
-          if (res.success) {
-            _this.btn_loading = false
-            _this.fileName = ''
-            _this.fileName = '/api/template/'+res.data.fileName
-          }
         })
       }
     },
-    mounted () {
-      this.getTemplateName()
+    beforeMount () {
       let token = sessionStorage.getItem('token')
       this.headers['Authorization'] = token
+      this.Authorization = token
+      let customTempId = sessionStorage.getItem("customTempId")
+      this.customSolutionId = customTempId
     }
   }
 </script>

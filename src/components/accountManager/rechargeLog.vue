@@ -249,7 +249,7 @@
         _this.getList();
       }
     },
-    mounted () {
+    beforeMount () {
       this.getList()
     }
   }

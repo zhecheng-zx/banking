@@ -115,10 +115,10 @@
       },
       isChecked(){
         if(this.checked){
-            return true
+          return true
         }else{
-            this.openVn()
-            return false
+          this.openVn()
+          return false
         }
       },
       openVn() {
@@ -146,9 +146,6 @@
     },
     beforeMount(){
       this.getPrice()
-    },
-    mounted () {
-
     }
   }
 </script>

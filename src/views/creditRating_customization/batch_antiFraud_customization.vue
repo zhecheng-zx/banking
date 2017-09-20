@@ -78,7 +78,7 @@
         msg: '',
         fileList:[],
         params: {
-          solutionId: 6,
+          solutionId: 9,
         },
         multiple: false,
         headers:{
@@ -103,7 +103,15 @@
           this.param.tradeId = response.data.tradeId
           sessionStorage.setItem("cost",response.data.cost)
           sessionStorage.setItem("dataCount",response.data.dataCount)
+        }else{
+          this.fileList = this.fileList.slice(-1);
         }
+        this.$notify({
+          title: '提示信息',
+          message: response.msg,
+          type: response.success ? 'success' : 'error',
+          duration: '2000'
+        });
       },
       searchResult(){
         let param = {}
@@ -128,7 +136,7 @@
         })
       }
     },
-    mounted () {
+    beforeMount () {
       let token = sessionStorage.getItem('token')
       this.headers['Authorization'] = token
     }

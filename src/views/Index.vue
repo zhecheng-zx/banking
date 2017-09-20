@@ -9,7 +9,7 @@
         {{ displayedItems.top.title }}
       </h1>
       <div class="row">
-        <div v-for="item in displayedItems.top.content" :class="item.col">
+        <div v-for="item in displayedItems.top.content" :class="item.col" @click="linkTo(item.linkTo)">
           <div v-if="item.col != 'col-md-12'" :class="item.background">
             <h3>{{ item.name }}<i v-if="item.sub_title" :class="item.sub_icon"></i><em v-if="item.sub_title">({{ item.type }})</em></h3>
             <p>{{ item.profile }}</p>
@@ -127,9 +127,7 @@
 
     },
     beforeMount () {
-      if (this.$root._isMounted) {
-        this.loadItems()
-      }
+      this.loadItems()
     },
     methods: {
       loadItems () {
@@ -245,15 +243,12 @@
         sessionStorage.setItem('from_page','/antiFraud')
         this.$router.push({path: '/antiFraud/custom_template'})
       },
-      isCustomTrue(){
-
+      linkTo(link){
+        this.$router.push({path: link})
       },
       isCustomFalse(){
 
       }
-    },
-    mounted () {
-
     }
   }
 </script>

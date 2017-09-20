@@ -41,22 +41,22 @@
               </div>
             </div>
             <div v-if="step==1" class="box">
-              <el-form ref="form" :model="form" label-width="120px">
-                <el-form-item label="原手机号码：">
-                  <el-input v-model="form.phone" size="larger"></el-input>
+              <el-form ref="form" :rules="rules1" :model="form" label-width="120px">
+                <el-form-item label="原手机号码：" prop="mobile">
+                  <el-input v-model="form.mobile" size="large"></el-input>
                 </el-form-item>
-                <el-form-item label="验证码：">
+                <el-form-item label="验证码：" prop="vcode">
                   <el-col :span="18">
-                    <el-input v-model="form.yzm" size="larger"></el-input>
+                    <el-input v-model="form.vcode" size="large"></el-input>
                   </el-col>
                   <el-col class="line text-center" :span="1">&nbsp;</el-col>
                   <el-col :span="4">
-                    <img src="/public/images/yzm.png" />
+                    <img :src="imgUrl" @click="changeImg()" />
                   </el-col>
                 </el-form-item>
-                <el-form-item label="短信验证码：">
+                <el-form-item label="短信验证码：" prop="smsCode">
                   <el-col :span="15">
-                    <el-input v-model="form.messageNumber" size="larger"></el-input>
+                    <el-input v-model="form.smsCode" size="large"></el-input>
                   </el-col>
                   <el-col class="line" :span="1">&nbsp;</el-col>
                   <el-col :span="8">
@@ -64,27 +64,27 @@
                   </el-col>
                 </el-form-item>
                 <el-form-item label=" ">
-                  <el-button type="danger" size="large" @click="next()">下一步</el-button>
+                  <el-button type="danger" size="large" @click="next('form')">下一步</el-button>
                 </el-form-item>
               </el-form>
             </div>
             <div v-if="step==2" class="box">
-              <el-form ref="form" :model="form2" label-width="140px">
-                <el-form-item label="新手机号码：">
-                  <el-input v-model="form.phone" size="larger"></el-input>
+              <el-form ref="form2" :rules="rules1" :model="form2" label-width="140px">
+                <el-form-item label="新手机号码：" prop="mobile">
+                  <el-input v-model="form2.mobile" size="large"></el-input>
                 </el-form-item>
-                <el-form-item label="验证码：">
+                <el-form-item label="验证码：" prop="vcode">
                   <el-col :span="18">
-                    <el-input v-model="form.yzm" size="larger"></el-input>
+                    <el-input v-model="form2.vcode" size="large"></el-input>
                   </el-col>
                   <el-col class="line text-center" :span="1">&nbsp;</el-col>
                   <el-col :span="4">
-                    <img src="/public/images/yzm.png" />
+                    <img :src="imgUrl" @click="changeImg2()" />
                   </el-col>
                 </el-form-item>
-                <el-form-item label="短信验证码：">
+                <el-form-item label="短信验证码：" prop="smsCode">
                   <el-col :span="15">
-                    <el-input v-model="form.messageNumber" size="larger"></el-input>
+                    <el-input v-model="form2.smsCode" size="large"></el-input>
                   </el-col>
                   <el-col class="line" :span="1">&nbsp;</el-col>
                   <el-col :span="8">
@@ -92,17 +92,17 @@
                   </el-col>
                 </el-form-item>
                 <el-form-item label=" ">
-                  <el-button type="danger" size="large" @click="next()">下一步</el-button>
+                  <el-button type="danger" size="large" @click="next('form2')">下一步</el-button>
                 </el-form-item>
               </el-form>
             </div>
             <div v-if="step==3" class="box text-center">
               <i class="el-notification__icon el-icon-circle-check"></i>
               <h1 class="message">手机号码变更成功！</h1>
-              <p class="other_message">
-                <span class="text-red">5 </span>
-                秒后自动跳转到安全中心
-              </p>
+              <!--<p class="other_message">-->
+                <!--<span class="text-red">5 </span>-->
+                <!--秒后自动跳转到安全中心-->
+              <!--</p>-->
               <div class="btn-box">
                 <router-link class="btn btn-default btn-lg" to="/safetyInfo">立即前往</router-link>
               </div>
@@ -137,49 +137,48 @@
   .box {
     width: auto;
     padding: 20px;
-  &+.box {
-    width: 600px;
-    margin: 0 auto;
-  .el-form-item__label{
-    padding-top: 16px;
-  }
-  .el-input--larger .el-input__inner {
-    height: 48px;
-  }
-
-  .el-button {
-    width: 100%;
-    padding: 15px 15px;
-  }
-  .el-icon-circle-check{
-    float: none;
-    width: 80px;
-    height: 80px;
-    color: #66c232;
-    font-size: 80px;
-    border-radius: 40px;
-    -webkit-box-shadow: inset 0 0 27px rgba(102,194,50,.45);
-    -moz-box-shadow: inset 0 0 27px rgba(102,194,50,.45);
-    box-shadow: inset 0 0 27px rgba(102,194,50,.45);
-    box-shadow: 0 0 27px rgba(102,194,50,.45);
-  }
-  .message{
-    margin-top: 35px;
-    font-size: 36px;
-  }
-  .other_message{
-    margin-top: 35px;
-    font-size: 16px;
-    color:#a5a5a5;
-  }
-  .btn-box{
-    margin-top:45px;
-  >.el-button{
-     width: 200px;
-   }
-  }
-  }
-  }
+    &+.box {
+      width: 600px;
+      margin: 0 auto;
+        .el-form-item__label{
+          padding-top: 16px;
+        }
+        .el-input--large .el-input__inner {
+          height: 42px;
+        }
+        .el-button {
+          width: 100%;
+          padding: 12px 15px;
+        }
+        .el-icon-circle-check{
+          float: none;
+          width: 80px;
+          height: 80px;
+          color: #66c232;
+          font-size: 80px;
+          border-radius: 40px;
+          -webkit-box-shadow: inset 0 0 27px rgba(102,194,50,.45);
+          -moz-box-shadow: inset 0 0 27px rgba(102,194,50,.45);
+          box-shadow: inset 0 0 27px rgba(102,194,50,.45);
+          box-shadow: 0 0 27px rgba(102,194,50,.45);
+        }
+        .message{
+          margin-top: 35px;
+          font-size: 36px;
+        }
+        .other_message{
+          margin-top: 35px;
+          font-size: 16px;
+          color:#a5a5a5;
+        }
+        .btn-box{
+          margin-top:45px;
+          >.el-button{
+            width: 200px;
+          }
+        }
+      }
+    }
   }
 </style>
 <script>
@@ -193,28 +192,72 @@
       return {
         step: 1,
         form: {
-          phone: '',
-          yzm: '',
-          messageNumber: ''
+          mobile: '',
+          vcode: '',
+          smsCode: ''
+        },
+        rules1: {
+          mobile: [{
+            required:true,message:'请输入手机号码',trigger:'blur'
+          },{
+            max:11,min:11,message:'请输入正确的手机号码',trigger:'blur'
+          }],
+          vcode: [{
+            required:true,message:'请输入图片验证码',trigger:'blur'
+          },{
+            max:4,min:4,message:'长度为4位',trigger:'blur'
+          }],
+          smsCode: [{
+            required:true,message:'请输入短信验证码',trigger:'blur'
+          },{
+            max:6,min:4,message:'长度为4-6位',trigger:'blur'
+          }]
         },
         form2: {
-          password: '',
-          confirmPassword: ''
-        }
+          mobile: '',
+          vcode: '',
+          smsCode: ''
+        },
+        token: '',
+        imgUrl: '',
+        imgUrl2: ''
       }
     },
     components: {},
     methods: {
-      next(){
-        if(this.step == 3){
-          this.step = 1
-          return
-        }
-        this.step = this.step+1
+      next(formName){
+        let _this = this
+        _this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if(this.step == 3){
+              this.step = 1
+              return
+            }
+            this.step = this.step+1
+          } else {
+            return false;
+          }
+        })
+      },
+      changeImg(){
+        let _this = this
+        _this.imgUrl = ''
+        setTimeout(function () {
+          _this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+_this.token
+        },50)
+      },
+      changeImg2(){
+        let _this = this
+        _this.imgUrl2 = ''
+        setTimeout(function () {
+          _this.imgUrl2 = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+_this.token
+        },50)
       }
     },
-    mounted () {
-
+    beforeMount(){
+      this.token = sessionStorage.getItem('token')
+      this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+this.token
+      this.imgUrl2 = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+this.token
     }
   }
 </script>

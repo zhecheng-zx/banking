@@ -89,6 +89,7 @@
         sessionStorage.removeItem('customTempId')
         sessionStorage.removeItem('dataCount')
         sessionStorage.removeItem('token')
+        sessionStorage.removeItem('from_page')
       }
     },
     watch: {

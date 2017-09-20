@@ -190,7 +190,8 @@
           ]
         },
         loginStatus: false,
-        imgUrl: '/api/security/captcha',
+        imgUrl: '',
+        imgToken: '',
         fullscreenLoading:false
       };
     },
@@ -200,9 +201,8 @@
       }
     },
     beforeMount () {
-      if (this.$root._isMounted) {
-        this.load()
-      }
+      this.load()
+      this.getToken()
     },
     watch: {
       'loginStatus':function(to,from){
@@ -219,7 +219,7 @@
       changeImg() {
         this.imgUrl = ''
         setTimeout(() => {
-          this.imgUrl = '/api/security/captcha'
+          this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+'&JSESSIONID='+this.imgToken
         },100)
       },
       submitForm(formName) {
@@ -237,16 +237,19 @@
             }).then((res,req)=>{
               if(res.success){
                 sessionStorage.setItem("token",res.data);
-                _this.$notify({
-                  title: '提示信息',
-                  message: '登录成功！',
-                  type: 'success',
-                  duration: '1500'
-                });
                 _this.loginStatus = true
                 _this.load()
-                _this.fullscreenLoading = false;
+                sessionStorage.removeItem('imgToken')
+              }else{
+                _this.changeImg()
               }
+              _this.$notify({
+                title: '提示信息',
+                message: res.msg,
+                type: res.success?'success':'error',
+                duration: '2000'
+              });
+              _this.fullscreenLoading = false;
             }).catch((error)=>{
               _this.fullscreenLoading = false;
               _this.$notify({
@@ -273,6 +276,12 @@
           loginStatus: this.loginStatus
         }).then(() => {
           this.$bar.finish()
+        })
+      },
+      getToken(){
+        this.$store.dispatch("AUTHENTICATE_TOKEN").then((res)=>{
+          this.imgToken = sessionStorage.getItem('imgToken')
+          this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+this.imgToken
         })
       }
     }

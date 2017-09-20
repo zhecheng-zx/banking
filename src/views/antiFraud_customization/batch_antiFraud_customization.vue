@@ -81,7 +81,7 @@
         btn_loading: true,
         fileName: 'javascript:void(0);',
         params: {
-          solutionId: 6,
+          solutionId: 7,
         },
         multiple: false,
         headers:{

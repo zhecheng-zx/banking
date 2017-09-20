@@ -94,21 +94,31 @@
           handle: '立即绑定',
           link: 'bindEmail',
 //          link: 'updateEmail'
-        },{
-          type: '绑定邮箱',
-          message: '邮件可以接收账户通知，并及时了账户信息变动情况',
-          status: '未绑定',
-          handle: '更换',
-//          link: 'bindEmail',
-          link: 'updateEmail'
         }]
       }
     },
     components: {},
     methods: {
+      getDataSource(){
+        let _this = this
+        _this.$store.dispatch('SECURITY_DATASTATUS').then((res)=>{
+          console.log(res)
+          if(res.data.email==1){
+            //根据数据显示状态 0 绑定1 更换2 立即设置
+            _this.tableData[3].handle = "更换"
+            _this.tableData[3].status = "已绑定"
+            _this.tableData[3].link = "updateEmail"
+          }
+          if(res.data.payPwd==2){
+            //根据数据显示状态 0 绑定1 更换2 立即设置
+            _this.tableData[1].handle = "立即设置"
+            _this.tableData[1].link = "updatePayPassword"
+          }
+        })
+      }
     },
-    mounted () {
-
+    beforeMount () {
+      this.getDataSource()
     }
   }
 </script>

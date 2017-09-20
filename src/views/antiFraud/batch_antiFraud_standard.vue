@@ -128,7 +128,7 @@
         })
       }
     },
-    mounted () {
+    beforeMount () {
       let token = sessionStorage.getItem('token')
       this.headers['Authorization'] = token
     }

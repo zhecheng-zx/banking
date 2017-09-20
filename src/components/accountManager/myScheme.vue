@@ -8,18 +8,9 @@
         <h3 class="text">我的定制方案</h3>
       </div>
       <div class="block-item gary">
-        <el-button type="danger">新增定制方案</el-button>
+        <el-button type="danger" @click="addNewCustom()">新增定制方案</el-button>
       </div>
-      <div class="block-item noborder">
-        <div class="inline-box">
-          <a class="inline-block" href="javascript:void(0);">今天</a>|
-          <a class="inline-block" href="javascript:void(0);">最近一周</a>|
-          <a class="inline-block" href="javascript:void(0);">最近一个月</a>|
-          <a class="inline-block" href="javascript:void(0);">最近三个月</a>|
-          <a class="inline-block" href="javascript:void(0);">最近半年</a>
-        </div>
-      </div>
-      <div class="block-item last-table">
+      <div class="block-item last-table min-height-400">
         <el-table
           :stripe="true"
           :data="tableData"
@@ -29,45 +20,41 @@
             prop="id"
             label="序号"
             width="80">
+            <template scope="scope">
+              {{scope.$index+1}}
+            </template>
           </el-table-column>
           <el-table-column
-            align="center"
-            prop="type"
+            align="left"
+            prop="name"
             label="定制方案名称"
-            width="140">
+            width="220">
           </el-table-column>
           <el-table-column
-            align="center"
-            prop="jinE"
+            align="left"
+            prop="content"
             label="定制方案内容"
-            width="360">
+            width="350">
           </el-table-column>
           <el-table-column
-            align="center"
+            align="left"
             label="操作">
             <template scope="scope">
-              <el-button type="text" size="small">编辑</el-button>
-              <el-button type="text" class="text-red" size="small"><span class="text-red">删除</span></el-button>
-              <span class="red-var">已设置默认</span>
+              <el-button type="text" size="small" @click="updateCustom(scope.row.id)">编辑</el-button>
+              <el-button type="text" class="text-red" size="small" @click="delOldCustom(scope.row.id)"><span class="text-red">删除</span></el-button>
+              <span class="red-var" v-if="scope.row.connive==='是'">已设置默认</span>
             </template>
           </el-table-column>
         </el-table>
-        <div class="pagination-box clearfix">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[10, 20, 30, 40]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
-          </el-pagination>
         </div>
       </div>
     </div>
   </div>
 </template>
 <style lang="css" scoped>
+  .min-height-400{
+    min-height: 400px;
+  }
   .el-form-item{
     margin-bottom: 0;
   }
@@ -155,92 +142,85 @@
   export default{
     data () {
       return {
-        tableData: [{
-          id: '1',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '2',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '3',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '4',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '5',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '6',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '7',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '8',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '9',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }, {
-          id: '10',
-          type: '线下转账',
-          jinE: '5000.00元',
-          status: '交易成功',
-          date: '2017/08/02 00:00:00'
-        }],
+        tableData: [],
         currentPage: 1,
 
         pickerOptions0: {
           disabledDate(time) {
             return time.getTime() < Date.now() - 8.64e7;
           }
-        },
-        form:{
-          status: '',
-          date1: '',
-          date2: '',
         }
       }
     },
     components: {},
     methods: {
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+      getCustomList(){
+        let _this = this
+        _this.$store.dispatch("ANTIFRAUD_CUSTOM").then((res,req) => {
+          if(res.success){
+            _this.tableData = res.data
+          }else{
+            _this.$notify({
+              title: '提示信息',
+              message: res.msg,
+              type: res.success?'success':'error',
+              duration: '2000'
+            })
+          }
+        })
       },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+      addNewCustom(){
+        sessionStorage.setItem('from_page','/accountManager/myScheme')
+        this.$router.push({path:'/antiFraud/custom_template'})
+      },
+      delOldCustom(params){
+        let _this = this,param = {}
+        param.id = params
+        _this.$confirm('是否确认删除该定制方案?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _this.$store.dispatch("ANTIFRAUD_CUSTOM_DEL",{ param }).then((res,req) => {
+              if(res.success){
+              _this.getCustomList()
+            }
+            this.$notify({
+              title: '提示信息',
+              message: res.success?'删除成功！':res.msg,
+              type: res.success?'success':'error',
+              duration: '2000'
+            })
+          })
+        }).catch((error) => {
+          _this.$notify({
+            type: 'info',
+            message: '已取消删除',
+            duration: '2000'
+          })
+        })
+      },
+      deleteCustomFun(){
+        let _this = this
+        _this.$store.dispatch("ANTIFRAUD_CUSTOM_DEL").then((res,req) => {
+          if(res.success){
+            _this.getCustomList()
+          }
+          this.$notify({
+            title: '提示信息',
+            message: res.success?'删除成功！':res.msg,
+            type: res.success?'success':'error',
+            duration: '2000'
+          })
+        })
+      },
+      updateCustom(param){
+        sessionStorage.setItem('from_page','/accountManager/myScheme')
+        this.$router.push({path:'/antiFraud/custom_template/'+param})
       }
     },
-    mounted () {
-
+    beforeMount(){
+      this.getCustomList()
     }
   }
 </script>

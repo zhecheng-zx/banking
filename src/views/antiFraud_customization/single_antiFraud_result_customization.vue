@@ -27,7 +27,7 @@
               </table>
             </div>
             <div class="table-box">
-              <h3>反欺诈（标准版）<span class="text-red">{{dataBase.result.totalAmount}}元</span><span class="red-var">查询完成</span></h3>
+              <h3>反欺诈（定制版）<span class="text-red">{{dataBase.result.totalAmount}}元</span><span class="red-var">查询完成</span></h3>
               <table class="table table-bordered table-striped text-center">
                 <tbody>
                 <tr>
@@ -41,10 +41,10 @@
                 </tbody>
               </table>
             </div>
-            <!--<p class="warning-text text-red">-->
-              <!--<img src="/public/images/warn_icon.png" />-->
-              <!--{{dataBase.result.scoreResult}}-->
-            <!--</p>-->
+            <p class="warning-text text-red">
+              <img src="/public/images/warn_icon.png" />
+              {{dataBase.desc}}
+            </p>
           </div>
         </div>
       </div>
@@ -70,7 +70,8 @@
         ANTIFRAUD_SQUERYONE_tradeId: '',
         dataBase:{
           result:{},
-          param: {}
+          param: {},
+          desc: ''
         }
       }
     },
@@ -88,17 +89,19 @@
             if(res.success){
               _this.dataBase.result = res.data.result
               _this.dataBase.param = res.data.parm
+              _this.dataBase.desc = res.data.desc
+            }else{
+              _this.$notify({
+                title: '提示信息',
+                message: res.msg,
+                type: res.success ? 'success' : 'error',
+                duration: '1000'
+              });
             }
-          _this.$notify({
-            title: '提示信息',
-            message: res.msg,
-            type: res.success ? 'success' : 'error',
-            duration: '1000'
-          });
         })
       }
     },
-    mounted () {
+    beforeMount () {
       this.load();
     }
   }

@@ -10,27 +10,27 @@
             <h3 class="title">修改支付密码</h3>
           </div>
           <div class="box">
-            <el-form ref="form" :model="form" label-width="138px">
-              <el-form-item label="旧支付密码：">
-                <el-input v-model="form.oldPassword" type="password" size="larger"></el-input>
+            <el-form ref="form" :rules="rules" :model="form" label-width="138px">
+              <el-form-item label="旧支付密码：" prop="beforepw">
+                <el-input v-model="form.beforepw" type="password" size="large" auto-complete="off"></el-input>
               </el-form-item>
-              <el-form-item label="新支付密码：">
-                <el-input v-model="form.newPassword" type="password" size="larger"></el-input>
+              <el-form-item label="新支付密码：" prop="newpw">
+                <el-input v-model="form.newpw" type="password" size="large" auto-complete="off"></el-input>
               </el-form-item>
-              <el-form-item label="确认新支付密码：">
-                <el-input v-model="checkNewPassword" type="password" size="larger"></el-input>
+              <el-form-item label="确认新支付密码：" prop="nowpw">
+                <el-input v-model="form.nowpw" type="password" size="large" auto-complete="off"></el-input>
               </el-form-item>
-              <el-form-item label="验证码：">
-                <el-col :span="18">
-                  <el-input v-model="form.yzm" size="larger"></el-input>
+              <el-form-item label="验证码：" prop="vcode">
+                <el-col :span="16">
+                  <el-input v-model="form.vcode" size="large" auto-complete="off"></el-input>
                 </el-col>
                 <el-col class="line text-center" :span="1">&nbsp;</el-col>
-                <el-col :span="4">
-                  <img src="/public/images/yzm.png" />
+                <el-col :span="7">
+                  <img :src="imgUrl" @click="changeImg()"/>
                 </el-col>
               </el-form-item>
               <el-form-item label=" ">
-                <el-button type="danger" size="large" @click="confirm()" v-loading.fullscreen.lock="fullscreenLoading">确定</el-button>
+                <el-button type="danger" size="large" @click="confirm('form')" v-loading.fullscreen.lock="fullscreenLoading">确定</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -114,37 +114,100 @@
    */
   export default{
     data () {
+      var validatePass = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入新密码'));
+        } else {
+          if (this.form.nowpw !== '') {
+            this.$refs.form.validateField('nowpw');
+          }
+          callback();
+        }
+      };
+      var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入新密码'));
+        } else if (value !== this.form.newpw) {
+          callback(new Error('两次输入新密码不一致!'));
+        } else {
+          callback();
+        }
+      };
       return {
         form: {
-          oldPassword: '',
-          newPassword: '',
-          yzm: ''
+          beforepw: '000000',
+          newpw: '000000',
+          nowpw: '000000',
+          vcode: ''
         },
-        checkNewPassword: '',
-        fullscreenLoading:false
+        rules: {
+          beforepw: [
+            { required: true, message: '请输入旧密码', trigger: 'blur' },
+            { min: 6, max: 16, message: '长度为6-16个字符', trigger: 'blur' }
+          ],
+          newpw: [
+            { min: 6, max: 16, message: '长度为6-16个字符', trigger: 'blur' },
+            { validator: validatePass, trigger: 'blur' }
+          ],
+          nowpw: [
+            { min: 6, max: 16, message: '两次输入新密码不一致', trigger: 'blur' },
+            { validator: validatePass2, trigger: 'blur' }
+          ],
+          vcode: [
+            { required: true, message: '请输入验证码', trigger: 'blur' },
+            { min: 4, max: 4, message: '长度为4个字符', trigger: 'blur' }
+          ]
+        },
+        fullscreenLoading:false,
+        token: '',
+        imgUrl: ''
       }
     },
     components: {},
     methods: {
-      confirm(){
+      confirm(formName){
         let _this = this
-        _this.fullscreenLoading = true;
-        setTimeout(() => {
-          _this.fullscreenLoading = false;
-          _this.$router.push({path: '/safetyInfo' });
-          _this.open()
-        }, 2000);
+        _this.$refs[formName].validate((valid) => {
+          if (valid) {
+            _this.fullscreenLoading = true;
+            _this.uodateLoginPassword()
+          } else {
+            return false;
+          }
+        })
       },
-      open() {
-        this.$notify({
-          title: '修改支付密码',
-          message: '恭喜您，支付密码修改成功！',
-          type: 'success'
-        });
+      uodateLoginPassword(){
+        let _this  = this,param = {}
+        param = $.extend({},_this.form)
+        param.beforepw = hex_md5(param.beforepw)
+        param.newpw = hex_md5(param.newpw)
+        param.nowpw = hex_md5(param.nowpw)
+        _this.$store.dispatch('SECURITY_CHANGEPAY',{ param }).then((res)=>{
+          _this.fullscreenLoading = false
+          if(res.success){
+            _this.$router.push({path:'/safetyInfo'})
+          }else{
+            _this.changeImg()
+          }
+          _this.$notify({
+            title: '修改支付密码',
+            message: res.msg,
+            type: res.success?'success':'error',
+            duration: '2000'
+          });
+        })
       },
+      changeImg(){
+        let _this = this
+        _this.imgUrl = ''
+        setTimeout(function () {
+          _this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+_this.token
+        },50)
+      }
     },
-    mounted () {
-
+    beforeMount () {
+      this.token = sessionStorage.getItem('token')
+      this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+this.token
     }
   }
 </script>

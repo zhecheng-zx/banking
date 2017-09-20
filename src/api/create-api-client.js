@@ -16,6 +16,12 @@ export function createAPI() {
 
   axios.interceptors.response.use((res) => {
     if(res.status >= 200 && res.status < 300){
+      if(res.headers['access-control-expose-headers']) {
+        sessionStorage.setItem('imgToken', res.headers[res.headers['access-control-expose-headers']])
+      }
+      // }else{
+      //   sessionStorage.removeItem('imgToken')
+      // }
       return res
     }
     return Promise.reject(res)
@@ -28,6 +34,7 @@ export function createAPI() {
     sessionStorage.removeItem('customTempId')
     sessionStorage.removeItem('dataCount')
     sessionStorage.removeItem('token')
+    sessionStorage.removeItem('from_page')
     Notification({
       title: '提示信息',
       message: "登录超时，请重新登录",
@@ -51,7 +58,7 @@ export function createAPI() {
           token = sessionStorage.getItem('token')
         }
         const suffix = Object.keys(params).map(name => {
-          return `${name}=${JSON.stringify(params[name])}`
+          return `${name}=${params[name]}`
         }).join('&')
         let urls = ''
         if(suffix.length>0){
@@ -69,10 +76,21 @@ export function createAPI() {
           })
         })
       },
+      get2 (target, params={}) {
+        let urls = ''
+        urls = `${target}`
+        return new Promise((resolve, reject) => {
+          axios.get(urls, params,{headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'}}).then(res =>{
+            resolve(res.data);
+          }).catch((error) => {
+            reject(error);
+          })
+        })
+      },
       post: function (target, options = {}) {
         let token = ''
         if(target == "/api/authenticate/login"){
-          token = ''
+          token = sessionStorage.getItem('imgToken')
         }else{
           token = sessionStorage.getItem('token')
         }

@@ -74,6 +74,14 @@ export function antifraud_custom_add(param) {
   return api.post('/api/antifraud/custom/add',param)
 }
 /**
+ * 删除定制方案
+ * @param param
+ * @returns {AxiosPromise|*}
+ */
+export function antifraud_custom_del(param) {
+  return api.post('/api/antifraud/custom/del',param)
+}
+/**
  * 获取定制方案的参数信息
  */
 export function antifraud_custom_getProducts() {
@@ -86,6 +94,14 @@ export function antifraud_custom_getProducts() {
  */
 export function antifraud_custom_get(param) {
   return api.post('/api/antifraud/custom/get', param)
+}
+/**
+ * 修改定制方案内容
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function antifraud_custom_update(param) {
+  return api.post('/api/antifraud/custom/update', param)
 }
 /**
  * 获取反欺诈定制方案查询的输入参数
@@ -265,6 +281,19 @@ export function recharge_latest(param) {
   return api.get('/api/recharge/latest', param)
 }
 /**
+ * 根据交易ID获取交易明细
+ * @param param
+ */
+export function trading_detail(param) {
+  return api.get('/api/trading/detail', param)
+}
+/**
+ * 登录页获取token
+ */
+export function authenticate_token() {
+  return api.get2('/api/authenticate/token')
+}
+/**
  * 条件检索充值列表
  * @param param
  * @returns {*|AxiosPromise}
@@ -279,14 +308,6 @@ export function recharge_search(param) {
  */
 export function antifraud_custom_charge(param) {
   return api.get('/api/antifraud/custom/charge', param)
-}
-/**
- * 根据交易ID获取交易明细
- * @param param String
- * @returns {*|AxiosPromise}
- */
-export function trading_detail(param) {
-  return api.get('/api/trading/detail/'+param)
 }
 /**
  * 查询N条最新的交易记录
@@ -328,7 +349,103 @@ export function message_del(param) {
 export function message_show(param) {
   return api.post('/api/message/show', param)
 }
-
+/********************安全中心开始**********************/
+/**
+ * 更换支付密码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function security_changePwd(param) {
+  return api.post('/api/security/changePwd', param)
+}
+/**
+ * 绑定支付密码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function security_bindPay(param) {
+  return api.post('/api/security/bindPay', param)
+}
+/**
+ * 更换支付密码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function security_changePay(param) {
+  return api.post('/api/security/changePay', param)
+}
+/**
+ * 验证登陆状态
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function security_checkSession() {
+  return api.post('/api/security/checkSession')
+}
+/**
+ * 根据数据显示状态
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function security_dataStatus() {
+  return api.post('/api/security/dataStatus')
+}
+/**
+ * 绑定手机号码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function phone_bind(param) {
+  return api.post('/api/phone/bind', param)
+}
+/**
+ * 发送短信验证码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function phone_send(param) {
+  return api.post('/api/phone/send', param)
+}
+/**
+ * (更换手机号)第一页验证
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function phone_step1(param) {
+  return api.post('/api/phone/step1', param)
+}
+/**
+ * (更换手机号)第二页验证
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function phone_step2(param) {
+  return api.post('/api/phone/step2', param)
+}
+/**
+ * 绑定邮箱地址
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function email_bind(param) {
+  return api.post('/api/email/bind', param)
+}
+/**
+ * 更换邮箱地址
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function email_change(param) {
+  return api.post('/api/email/change', param)
+}
+/**
+ * 邮件发送验证码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function email_send(param) {
+  return api.post('/api/email/send', param)
+}
 // export function getYZM() {
 //   let url = ''
 //   api.get('api/security/captcha',{}).then(res => {

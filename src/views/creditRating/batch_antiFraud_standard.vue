@@ -78,7 +78,7 @@
         msg: '',
         fileList:[],
         params: {
-          solutionId: 6,
+          solutionId: 8,
         },
         multiple: false,
         headers:{
@@ -128,7 +128,7 @@
         })
       }
     },
-    mounted () {
+    beforeMount () {
       let token = sessionStorage.getItem('token')
       this.headers['Authorization'] = token
     }

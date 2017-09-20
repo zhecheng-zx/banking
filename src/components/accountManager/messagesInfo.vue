@@ -18,7 +18,8 @@
             label="标题"
             width="180">
             <template scope="scope">
-              <router-link size="small" :to="'/accountManager/messagesInfo/' + (scope.row.message.id)">{{ scope.row.message.header }}</router-link>
+              <!--<router-link size="small" :to="'/accountManager/messagesInfo/'">{{ scope.row.message.header }}</router-link>-->
+              <el-button type="text" @click="showMessage(scope.row.message.id)">{{ scope.row.message.header }}</el-button>
             </template>
           </el-table-column>
           <el-table-column
@@ -64,7 +65,7 @@
         </div>
       </div>
     </div>
-    <messages-details v-if="articleId != -1" :content="content"></messages-details>
+    <messages-details v-if="articleId != -1" :content="content" @hideMessage="hideMessage"></messages-details>
   </div>
 </template>
 <style lang="css" scoped>
@@ -163,37 +164,28 @@
         },
         total: 0,
         oneLoad: true,
-        articleId: Number(this.$store.state.route.params.id) || -1,
+        articleId: -1,
         content:{title:''}
       }
     },
     components: { messagesDetails },
     computed: {
-      articleIds () {
-        return Number(this.$store.state.route.params.id) || -1
-      }
     },
-
     beforeMount () {
-      if (this.$root._isMounted) {
-        this.loadItems(this.articleId)
-      }
-      this.getList()
+      this.hideMessage()
       this.content = {
-        title: this.articleId,
-        content: 40
+        title: '',
+        content: ''
       }
     },
 
     beforeDestroy () {
     },
     watch: {
-      articleIds (to, from) {
-          console.log(to , from);
-        this.loadItems(to, from)
+      showMessage(){
+        this.articleId = 1
       }
     },
-
     methods: {
       handleSizeChange(val) {
         console.log(`每页 ${val} 条`);
@@ -241,14 +233,23 @@
         }).catch((error)=>{
         })
       },
-      loadItems (to = this.page, from = -1) {
-        this.$bar.start()
-        this.articleId = to
-        this.content = {
-          title: this.articleId,
-          content: 40
-        }
-        this.$bar.finish()
+      showMessage(params){
+        let _this = this,param = {}
+        _this.$bar.start()
+        param.id = params
+        _this.$store.dispatch('MESSAGE_SHOW',{ param }).then((res,req) => {
+          if(res.success){
+            _this.articleId = 1
+            _this.content = res.data
+          }
+          _this.$bar.finish()
+        }).catch((error)=>{
+          _this.$bar.finish()
+        })
+      },
+      hideMessage(){
+        this.articleId = -1
+        this.getList()
       }
     }
   }

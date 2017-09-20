@@ -107,7 +107,7 @@
               _this.fullscreenLoading = false
               let data = res.data
               sessionStorage.setItem("ANTIFRAUD_SQUERYONE_tradeId",data)
-              _this.$router.push({path:'result'})
+              _this.$router.push({path:'customization_result'})
             }else{
               _this.fullscreenLoading = false
             }
@@ -155,9 +155,6 @@
     },
     beforeMount(){
       this.getPrice()
-    },
-    mounted () {
-
     }
   }
 </script>

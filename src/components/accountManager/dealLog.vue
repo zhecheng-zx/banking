@@ -85,7 +85,7 @@
             align="center"
             label="操作">
             <template scope="scope">
-              <el-button type="text" size="small">明细</el-button>
+              <el-button type="text" size="small" @click="searchDetails(scope.row.id)">明细</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -272,9 +272,37 @@
         _this.form.pageSize = 10
         _this.params = $.extend({},_this.form)
         _this.getList();
+      },
+      searchDetails(ids){
+          let param = {},_this = this
+          param.id = ids
+        const h = _this.$createElement;
+        _this.$store.dispatch('TRADING_DETAIL',{ param }).then((res,req) => {
+          if(res.success){
+            _this.$msgbox({
+              title:'',
+              message:h('p', null, [
+                h('span', null, '查询总金额 '),
+                h('i', { style: 'color: #de182b' }, res.data.totalAmount),
+                h('span', null, '元，实际扣款金额 '),
+                h('i', { style: 'color: #de182b' }, res.data.actualAmount),
+                h('span', null, '元，退款金额 '),
+                h('i', { style: 'color: #de182b' }, res.data.refundAmount),
+              ]),
+              confirmButtonText: '确定',
+            });
+          }else{
+            _this.$notify({
+              title: '提示信息',
+              message: res.msg,
+              type: 'error',
+              duration: '2000'
+            })
+          }
+        })
       }
     },
-    mounted () {
+    beforeMount () {
       this.getList()
     }
   }

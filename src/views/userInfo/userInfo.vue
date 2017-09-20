@@ -79,9 +79,6 @@
           this.$bar.finish()
         })
       }
-    },
-    mounted () {
-
     }
   }
 </script>

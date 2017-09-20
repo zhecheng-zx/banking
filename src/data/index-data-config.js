@@ -89,11 +89,11 @@ const data = {
       icon: '/public/images/top.png',
       content: [
         {
-          content: '具备庞大的数据库和优质的第三方数据源，数据覆盖全国',
+          content: '数据全面，实时更新',
           icon: '/public/images/thumbnail_6.png'
         },
         {
-          content: '智能机器学习模型，结果精准且有特点，输出不仅包括量化分值，还包括描述性评判结果',
+          content: '智能风控模型，结合具体场景，特定详尽维度，作出精准评估',
           icon: '/public/images/thumbnail_7.png'
         },
         {
@@ -101,7 +101,7 @@ const data = {
           icon: '/public/images/thumbnail_8.png'
         },
         {
-          content: '深度了解金融行业需求及其痛点',
+          content: '深度了解金融行业需求及其痛点，成熟的解决方案，产品亦可定制化服务',
           icon: '/public/images/thumbnail_9.png'
         }
       ]
@@ -115,7 +115,7 @@ const data = {
         {
           col: "col-md-6",
           name: '反欺诈',
-          profile: '源头阻断风险，精准识别和预测欺诈风险，实时提供跨行业、多场景欺诈风险预警。',
+          profile: '精准识别和预测欺诈风险，实时提供跨行业、多场景欺诈风险预警。',
           center_icon: '/public/images/thumbnail_1.png',
           background: 'thumbnail background_item_safety',
           crown: false,
@@ -141,7 +141,7 @@ const data = {
         },{
           col: "col-md-6",
           name: '反欺诈',
-          profile: '量身定制属于自己的反欺诈，让风险彻底切断。',
+          profile: '定制化服务，自主、灵活、多样化。',
           center_icon: '/public/images/thumbnail_1.png',
           background: 'thumbnail background_item_safety',
           crown: true,
@@ -172,19 +172,19 @@ const data = {
       icon: '/public/images/top.png',
       content: [
         {
-          content: '久经考验的反欺诈技术',
+          content: '成熟的前端侦测技术和后端规则引擎',
           icon: '/public/images/icon_safety_01.png'
         },
         {
-          content: '数据源丰富多远新鲜，数据源合规',
+          content: '数据广，规模大，垂直深，场景高频',
           icon: '/public/images/icon_safety_02.png'
         },
         {
-          content: '反欺诈规则可自定，灵活多变',
+          content: '极速响应',
           icon: '/public/images/icon_safety_03.png'
         },
         {
-          content: '动态预警业务欺诈风险，及时阻断欺诈操作',
+          content: '实际业务定制服务，多元体验',
           icon: '/public/images/icon_safety_04.png'
         }
       ]
@@ -198,7 +198,7 @@ const data = {
         {
           col: "col-md-6",
           name: '信用评估',
-          profile: '源头阻断风险，精准识别和预测欺诈风险，实时提供跨行业、多场景欺诈风险预警。',
+          profile: '通过信用评估模型对用户个人信息进行量化分析，判定用户信用状况。',
           center_icon: '/public/images/thumbnail_2.png',
           background: 'thumbnail background_item_safety',
           crown: false,
@@ -224,7 +224,7 @@ const data = {
         },{
           col: "col-md-6",
           name: '信用评估',
-          profile: '量身定制属于自己的反欺诈，让风险彻底切断。',
+          profile: '多维度海量大数据，大量使用有意识 、有目的行为数据及机器学习算法来构建全新的信用模型，深入“了解”用户信用。',
           center_icon: '/public/images/thumbnail_2.png',
           background: 'thumbnail background_item_safety',
           crown: true,
@@ -263,7 +263,7 @@ const data = {
           icon: '/public/images/icon_creditRating_03.png'
         },
         {
-          content: '结果精确，经过银行、小贷公司的检验',
+          content: '结果精确，经银行、小贷公司及互联网金融机构的多年检验',
           icon: '/public/images/icon_creditRating_02.png'
         },
         {
@@ -281,7 +281,7 @@ const data = {
         {
           col: "col-md-12",
           name: '贷后风险监测',
-          profile: '源头阻断风险，精准识别和预测欺诈风险，实时提供跨行业、多场景欺诈风险预警。',
+          profile: '通过大数据整合业务数据和外部信息，在大数据平台统计分析技术基础上，实现贷后风险预警。',
           center_icon: '/public/images/thumbnail_3.png',
           background: 'thumbnail background_item_safety thumbnail-center reverse',
           crown: false,
@@ -306,11 +306,11 @@ const data = {
       icon: '/public/images/top.png',
       content: [
         {
-          content: '海量新鲜数合规数据源',
+          content: '海量新鲜数据',
           icon: '/public/images/icon_postloan_01.png'
         },
         {
-          content: '用户画像技术炉火纯青',
+          content: '成熟的用户画像技术',
           icon: '/public/images/icon_postloan_02.png'
         },
         {
@@ -332,7 +332,7 @@ const data = {
         {
           col: "col-md-12",
           name: '风险舆情',
-          profile: '源头阻断风险，精准识别和预测欺诈风险，实时提供跨行业、多场景欺诈风险预警。',
+          profile: '通过数据采集和智能分析，稳准狠的把互联网读懂，读薄',
           center_icon: '/public/images/thumbnail_4.png',
           background: 'thumbnail background_item_safety thumbnail-center reverse',
           crown: false,
@@ -383,7 +383,7 @@ const data = {
         {
           col: "col-md-12",
           name: '精准营销',
-          profile: '源头阻断风险，精准识别和预测欺诈风险，实时提供跨行业、多场景欺诈风险预警。',
+          profile: '通过多维度客户查询引擎，并根据客户细分与客户金融需求分析，制定营销策略。',
           center_icon: '/public/images/thumbnail_5.png',
           background: 'thumbnail background_item_safety thumbnail-center reverse',
           crown: false,
@@ -408,15 +408,15 @@ const data = {
       icon: '/public/images/top.png',
       content: [
         {
-          content: '银联银行卡消费数据实时送到',
+          content: '银联卡消费数据实时送到',
           icon: '/public/images/icon_precisionMarketing_01.png'
         },
         {
-          content: '用户消费画像精准刻画',
+          content: '全面刻画用户画像',
           icon: '/public/images/icon_postloan_02.png'
         },
         {
-          content: '针对不同客户产生特定评价',
+          content: '不同客户产生特定评价',
           icon: '/public/images/icon_precisionMarketing_03.png'
         },
         {

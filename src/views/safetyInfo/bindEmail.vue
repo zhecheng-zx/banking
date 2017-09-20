@@ -13,20 +13,20 @@
           <div class="box">
             <el-form ref="form" :model="form" label-width="138px">
               <el-form-item label="邮箱：">
-                <el-input v-model="form.oldPassword" type="password" size="larger"></el-input>
+                <el-input v-model="form.oldPassword" type="password" size="large"></el-input>
               </el-form-item>
-              <el-form-item label="短信验证码：">
+              <el-form-item label="验证码：">
                 <el-col :span="15">
-                  <el-input v-model="form.messageNumber" size="larger"></el-input>
+                  <el-input v-model="form.messageNumber" size="large"></el-input>
                 </el-col>
                 <el-col class="line" :span="1">&nbsp;</el-col>
                 <el-col :span="8">
                   <el-button size="large">发送验证码</el-button>
                 </el-col>
               </el-form-item>
-              <el-form-item label="验证码：">
+              <el-form-item label="图形验证码：">
                 <el-col :span="18">
-                  <el-input v-model="form.yzm" size="larger"></el-input>
+                  <el-input v-model="form.yzm" size="large"></el-input>
                 </el-col>
                 <el-col class="line text-center" :span="1">&nbsp;</el-col>
                 <el-col :span="4">
@@ -72,13 +72,13 @@
   .el-form-item__label{
     padding-top: 16px;
   }
-  .el-input--larger .el-input__inner {
-    height: 48px;
+  .el-input--large .el-input__inner {
+    height: 42px;
   }
 
   .el-button {
     width: 100%;
-    padding: 15px 15px;
+    padding: 12px 15px;
   }
   .el-icon-circle-check{
     float: none;

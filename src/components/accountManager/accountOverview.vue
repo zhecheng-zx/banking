@@ -75,7 +75,6 @@
             count: 10
           }
         _this.$store.dispatch('RECHARGE_LATEST',{ param }).then((res,req) => {
-          console.log(res)
           if(res.success){
             _this.rechargeList = res.data
           }
@@ -88,7 +87,6 @@
             count: 10
           }
         _this.$store.dispatch('TRADING_LATEST',{ param }).then((res,req) => {
-          console.log(res)
           if(res.success){
             _this.tradingList = res.data
           }
@@ -100,9 +98,6 @@
       this.getAmount()
       this.getRechargeLatest()
       this.getTradingLatest()
-    },
-    mounted () {
-
     }
   }
 </script>

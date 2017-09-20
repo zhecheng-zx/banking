@@ -69,7 +69,8 @@
       confirm(){
         let _this = this
         if(_this.isChecked()){
-          let param = _this.param
+          let param = {}
+          param = $.extend({},{},_this.param)
           param.payPassword = hex_md5(_this.param.payPassword)
           param.customSolutionId = sessionStorage.getItem('customTempId')
           _this.fullscreenLoading = true
@@ -81,7 +82,7 @@
               _this.fullscreenLoading = false
               let data = res.data
               sessionStorage.setItem("ANTIFRAUD_SQUERYONE_tradeId",data.tradeId)
-              _this.$router.push({path:'result'})
+              _this.$router.push({path:'customization_result'})
             }else{
               _this.fullscreenLoading = false
             }
@@ -149,8 +150,6 @@
     beforeMount(){
       this.loadItems()
       this.getPrice()
-    },
-    mounted () {
     }
   }
 </script>

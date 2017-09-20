@@ -102,7 +102,7 @@ export function createRouter () {
       { path: '/riskOpinion', component: CreateIndexView({ 'id': 'riskOpinion', 'title': '风险舆情'})},
       { path: '/precisionMarketing', component: CreateIndexView({ 'id': 'precisionMarketing', 'title': '精准营销'})},
       {
-        path: '/antiFraud/custom_template',/*方案选择类型*/
+        path: '/antiFraud/custom_template/:id(\\d+)?',/*方案选择类型*/
         component: select_type
       },
       {

@@ -158,9 +158,6 @@
     },
     beforeMount(){
       this.getPrice()
-    },
-    mounted () {
-
     }
   }
 </script>

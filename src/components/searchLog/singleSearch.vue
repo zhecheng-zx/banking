@@ -329,7 +329,7 @@
         }
       }
     },
-    mounted () {
+    beforeMount () {
       this.token = sessionStorage.getItem('token')
       this.getRecordsList()
     }

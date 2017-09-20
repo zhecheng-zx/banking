@@ -34,7 +34,7 @@
           </div>
           <div class="form-group">
             <div class="col-md-5 col-md-offset-4">
-                <el-checkbox v-model="form.connive" true-label="是" false-label="否">设置为默认</el-checkbox>
+              <el-checkbox v-model="form.connive" true-label="是" false-label="否">设置为默认</el-checkbox>
             </div>
           </div>
           <div class="form-group">
@@ -58,6 +58,7 @@
       return {
         msg: '',
         checkAll: false,
+        ids: this.$route.params.id,
         cities: [],
         loading:true,
         fullscreenLoading:false,
@@ -90,6 +91,33 @@
               proIds.push(item.id)
             })
             _this.productIds = proIds
+            if(_this.ids){
+              _this.loadUpdateItem()
+            }
+          }
+        }).catch((error)=>{
+          _this.$notify({
+            title: '提示信息',
+            message: error.message,
+            type: 'error',
+            duration: '2000'
+          })
+        })
+      },
+      loadUpdateItem(){
+        let _this = this,param = {}
+        param.id = this.ids
+        _this.$store.dispatch('ANTIFRAUD_CUSTOM_GET',{ param }).then((res,req) => {
+          if(res.success){
+            _this.form.name = res.data.name
+            _this.form.connive = res.data.connive
+            if(res.data.products.length == _this.productIds.length){
+              _this.checkAll = true
+            }
+            res.data.products.map(function (item,index) {
+              _this.form.productIds.push(item.id)
+            })
+            _this.loading = false
           }
         }).catch((error)=>{
           _this.$notify({
@@ -104,28 +132,39 @@
         let _this = this
         _this.fullscreenLoading = true
         let param = {}
-        param = _this.form
-        _this.$store.dispatch('ANTIFRAUD_CUSTOM_ADD',{ param }).then((res,req) => {
-          _this.$router.push({path: ''+sessionStorage.getItem('from_page')})
-          _this.fullscreenLoading = false
-          _this.$notify({
-            title: '提示信息',
-            message: res.msg,
-            type: res.success ? 'success' : 'error',
-            duration: '2000'
-          });
-        }).catch(function (error) {
-          _this.fullscreenLoading = false
-          _this.$notify({
-            title: '提示信息',
-            message: error.message,
-            type: 'error',
-            duration: '2000'
-          });
-        })
+        if(_this.ids){/*判断是修改还是新建*/
+          param = $.extend({},_this.form)
+          param.id = _this.ids
+          _this.$store.dispatch('ANTIFRAUD_CUSTOM_UPDATE',{ param }).then((res,req) => {
+            _this.$router.push({path: ''+sessionStorage.getItem('from_page')})
+            _this.fullscreenLoading = false
+            _this.$notify({
+              title: '提示信息',
+              message: res.msg,
+              type: res.success ? 'success' : 'error',
+              duration: '2000'
+            });
+          }).catch(function (error) {
+            _this.fullscreenLoading = false
+          })
+        }else{
+          param = _this.form
+          _this.$store.dispatch('ANTIFRAUD_CUSTOM_ADD',{ param }).then((res,req) => {
+            _this.$router.push({path: ''+sessionStorage.getItem('from_page')})
+            _this.fullscreenLoading = false
+            _this.$notify({
+              title: '提示信息',
+              message: res.msg,
+              type: res.success ? 'success' : 'error',
+              duration: '2000'
+            });
+          }).catch(function (error) {
+            _this.fullscreenLoading = false
+          })
+        }
       }
     },
-    mounted () {
+    beforeMount () {
       this.loadItem();
     }
   }

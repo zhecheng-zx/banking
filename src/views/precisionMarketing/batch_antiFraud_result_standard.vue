@@ -48,7 +48,7 @@
     },
     components: {},
     methods: {},
-    mounted () {
+    beforeMount () {
       let _this = this
       _this.cost = sessionStorage.getItem("cost")
       _this.dataCount = sessionStorage.getItem("dataCount")

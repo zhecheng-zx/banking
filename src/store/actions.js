@@ -6,6 +6,7 @@
 import {
   login,
   logout,
+  authenticate_token,
   antifraud_squeryone,
   antifraud_bqueryone,
   antifraud_squerytwo,
@@ -29,8 +30,10 @@ import {
   excel_import,
   antifraud_custom_setup,
   antifraud_custom_add,
+  antifraud_custom_del,
   antifraud_custom_getProducts,
   antifraud_custom_get,
+  antifraud_custom_update,
   antifraud_custom_getArgs,
   antifraud_createTemplate,
   records_single,
@@ -44,7 +47,19 @@ import {
   message,
   message_del,
   message_show,
-  antifraud_custom_charge
+  antifraud_custom_charge,
+  security_changePwd,
+  security_bindPay,
+  security_changePay,
+  security_checkSession,
+  security_dataStatus,
+  phone_bind,
+  phone_send,
+  phone_step1,
+  phone_step2,
+  email_bind,
+  email_change,
+  email_send
 } from '../api'
 import data from '../data/index-data-config'
 import userInfoData from '../data/userInfo-data-config'
@@ -206,6 +221,20 @@ export default {
     })
   },
   /**
+   * 删除定制方案
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {*|Thenable<U>|Promise<U>|Promise.<TResult>}
+   * @constructor
+   */
+  ANTIFRAUD_CUSTOM_DEL: ({commit, dispatch, state}, { param }) => {
+    return antifraud_custom_del(param).then((res,req) => {
+      return res
+    })
+  },
+  /**
    * 获取定制方案列表的信息，反显
    * @param commit
    * @param dispatch
@@ -216,6 +245,20 @@ export default {
    */
   ANTIFRAUD_CUSTOM_GET: ({commit, dispatch, state}, { param }) => {
     return antifraud_custom_get(param).then((res,req) => {
+      return res
+    })
+  },
+  /**
+   * 修改定制方案内容
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {*|Promise.<TResult>|Thenable<U>|Promise<U>}
+   * @constructor
+   */
+  ANTIFRAUD_CUSTOM_UPDATE: ({commit, dispatch, state}, { param }) => {
+    return antifraud_custom_update(param).then((res,req) => {
       return res
     })
   },
@@ -553,12 +596,112 @@ export default {
    * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
    * @constructor
    */
-  MESSAGE_SHOW: ({commit, dispatch, state}, {param}) => {
+  MESSAGE_SHOW: ({commit, dispatch, state}, { param }) => {
     return message_show(param).then((res,req)=>{
       return res
     })
+  },
+  /***************安全中心开始***************/
+  /**
+   * 修改登录密码
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Promise.<TResult>|Promise<U>|Thenable<U>|*}
+   * @constructor
+   */
+  SECURITY_CHANGEPWD: ({commit, dispatch, state}, { param }) => {
+    return security_changePwd(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 绑定支付密码
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Promise<U>|*|Thenable<U>|Promise.<TResult>}
+   * @constructor
+   */
+  SECURITY_BINDPAY: ({commit, dispatch, state}, { param }) => {
+    return security_bindPay(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 修改支付密码
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {Promise<U>|*|Thenable<U>|Promise.<TResult>}
+   * @constructor
+   */
+  SECURITY_CHANGEPAY: ({commit, dispatch, state}, { param }) => {
+    return security_changePay(param).then((res,req)=>{
+      return res
+    })
+  },
+  SECURITY_CHECKSESSION: ({commit, dispatch, state}) => {
+    return security_checkSession().then((res,req)=>{
+      return res
+    })
+  },
+  SECURITY_DATASTATUS: ({commit, dispatch, state}) => {
+    return security_dataStatus().then((res,req)=>{
+      return res
+    })
+  },
+  PHONE_BIND: ({commit, dispatch, state}, { param }) => {
+    return phone_bind(param).then((res,req)=>{
+      return res
+    })
+  },
+  PHONE_SEND: ({commit, dispatch, state}, { param }) => {
+    return phone_send(param).then((res,req)=>{
+      return res
+    })
+  },
+  PHONE_STEP1: ({commit, dispatch, state}, { param }) => {
+    return phone_step1(param).then((res,req)=>{
+      return res
+    })
+  },
+  PHONE_STEP2: ({commit, dispatch, state}, { param }) => {
+    return phone_step2(param).then((res,req)=>{
+      return res
+    })
+  },
+  EMAIL_BIND: ({commit, dispatch, state}, { param }) => {
+    return email_bind(param).then((res,req)=>{
+      return res
+    })
+  },
+  EMAIL_CHANGE: ({commit, dispatch, state}, { param }) => {
+    return email_change(param).then((res,req)=>{
+      return res
+    })
+  },
+  EMAIL_SEND: ({commit, dispatch, state}, { param }) => {
+    return email_send(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 登录页获取token
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @returns {Promise<U>|Thenable<U>|*|Promise.<TResult>}
+   * @constructor
+   */
+  AUTHENTICATE_TOKEN: ({commit, dispatch, state}) => {
+    return authenticate_token().then((res,req)=>{
+      return res
+    })
   }
-
   // FETCH_YZM_IMG: ({commit, dispatch, state})=>{
   //   // commit('SET_YZM_URL', { url })
   //   return getYZM().then(url => commit('SET_YZM_IMG', { url }))

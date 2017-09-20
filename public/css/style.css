@@ -169,7 +169,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {color:#b8b8b8;}
 }
 .thumbnail>h3,
 .thumbnail>p {
-  width:50%;
+  width:70%;
   margin:0 auto;
   text-align:center;
 }
@@ -179,7 +179,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {color:#b8b8b8;}
   font-size: 36px;
 }
 .thumbnail>p{
-  height:50px;
+  height:65px;
   line-height: 25px;
   margin-top: 22px;
   font-size: 18px;
@@ -794,13 +794,14 @@ input[type=file] {
   position: relative;
   margin: 0 auto;
   display: block;
-  width: 58px;
   height: 28px;
   line-height: 28px;
   text-align: center;
   border-radius: 4px;
 }
-
+.transition-bar-text.posa .bar-text>span {
+  width: 58px;
+}
 .transition-bar-text .bar-text>span:after {
   position: absolute;
   top: 100%;
@@ -967,6 +968,11 @@ input[type=file] {
   top: 13px;
   margin-left: -29px;
   left: 15.8%;
+  -webkit-transition: all .8s;
+  -moz-transition: all .8s;
+  -ms-transition: all .8s;
+  -o-transition: all .8s;
+  transition: all .8s;
 }
 /**
 * 表格的左侧和右侧固定的列

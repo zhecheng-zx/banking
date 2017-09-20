@@ -31,16 +31,13 @@
               <h5>{{dataBase.result.scoreResult}}</h5>
               <div class="transition-bar-box">
                 <div class="transition-bar-text posa" :style="'left:'+leftNum+'%'">
-                  <div class="bar-text active wp400" :class="'bar-text-'+currentItem">
+                  <div class="bar-text active" :class="'bar-text-'+currentItem">
                     <span>{{dataBase.result.score}}</span>
                   </div>
                 </div>
                 <div class="transition-bar-score">
-                  <div class="bar-score bar-score-1 wp158">
+                  <div class="bar-score bar-score-1 wp400">
                     <span class="score">0</span>
-                  </div>
-                  <div class="bar-score bar-score-2 wp242">
-                    <span class="score">158</span>
                   </div>
                   <div class="bar-score bar-score-3 wp78">
                     <span class="score">400</span>
@@ -69,8 +66,7 @@
                   </div>
                 </div>
                 <div class="transition-bar-item">
-                  <div class="bar-item bar-item-1 wp158"></div>
-                  <div class="bar-item bar-item-2 wp242"></div>
+                  <div class="bar-item bar-item-1 wp400"></div>
                   <div class="bar-item bar-item-3 wp78"></div>
                   <div class="bar-item bar-item-4 wp37"></div>
                   <div class="bar-item bar-item-5 wp85"></div>
@@ -204,7 +200,7 @@
         })
       }
     },
-    mounted () {
+    beforeMount () {
       this.load();
     }
   }

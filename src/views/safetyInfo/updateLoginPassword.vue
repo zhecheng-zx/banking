@@ -112,6 +112,7 @@
    * import "vue-style-loader!css-loader!sass-loader!../../assets/vendor/iCkeck-v1.0.2/css/skins/square/blue.css";
    * import loginButton from './components/loginButton.vue';
    */
+  import {getCookie} from '../../util/cookie'
   export default{
     data () {
       var validatePass = (rule, value, callback) => {
@@ -135,9 +136,9 @@
       };
       return {
         form: {
-          beforepw: '000000',
-          newpw: '000000',
-          nowpw: '000000',
+          beforepw: '',
+          newpw: '',
+          nowpw: '',
           vcode: ''
         },
         rules: {
@@ -206,7 +207,7 @@
       }
     },
     beforeMount () {
-      this.token = sessionStorage.getItem('token')
+      this.token = getCookie('AUTHENTICATE_TOKEN')
       this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+this.token
     }
   }

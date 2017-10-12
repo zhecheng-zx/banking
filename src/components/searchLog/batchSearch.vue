@@ -2,7 +2,7 @@
 * Created by zhangxin on 2017/9/5.
 */
 <template>
-  <div>
+  <div v-loading.body="loading">
     <div class="block">
       <div class="block-item">
         <h3 class="text">查询记录</h3>
@@ -84,7 +84,6 @@
           </el-table-column>
         </el-table>
         <div class="pagination-box clearfix">
-          {{ruleForm.status}}
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -185,9 +184,11 @@
    * import "vue-style-loader!css-loader!sass-loader!../../assets/vendor/iCkeck-v1.0.2/css/skins/square/blue.css";
    * import loginButton from './components/loginButton.vue';
    */
+  import {getCookie} from '../../util/cookie'
   export default{
     data () {
       return {
+        loading: true,
         uploadUrl: '/api/records/export?tradeId=',
         token: '',
         tableData: [],
@@ -216,7 +217,6 @@
         rules: {
           name: [
             { required: false, message: '请输入姓名', trigger: 'blur' },
-            { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
           ],
           phone: [
             { required: false },
@@ -262,6 +262,7 @@
       },
       getRecordsList(){
         let _this = this,param = {}
+        _this.loading = true
         param = $.extend({},{},_this.ruleForm)
         param.startDate = ''+ param.startDate!='' ? new Date(param.startDate).Format('yyyy-MM-dd'): ''
         param.endDate = ''+ param.startDate!='' ? new Date(param.endDate).Format('yyyy-MM-dd'): ''
@@ -270,7 +271,9 @@
             _this.tableData=res.data.page.list
             _this.total = res.data.page.total
           }
+          _this.loading = false
         }).catch((error)=>{
+          _this.loading = false
         })
       },
       resetForm(formName) {
@@ -285,7 +288,7 @@
       }
     },
     beforeMount () {
-      this.token = sessionStorage.getItem('token')
+      this.token = getCookie('AUTHENTICATE_TOKEN')
       this.getRecordsList()
     }
   }

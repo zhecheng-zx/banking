@@ -1,5 +1,5 @@
 import axios from 'axios'
-
+import {getCookie} from '../../util/cookie'
 const isProd = process.env.NODE_ENV === 'production'
 
 let transformRequest = function (data) {
@@ -31,7 +31,7 @@ export function createAPI() {
         if(target == "/api/authenticate/login"){
           token = ''
         }else{
-          token = sessionStorage.getItem('token')
+          token = getCookie('AUTHENTICATE_TOKEN')
         }
         return new Promise((target, reject) => {
           axios.request({
@@ -54,7 +54,7 @@ export function createAPI() {
         if(target == "/api/authenticate/login"){
           token = ''
         }else{
-          token = sessionStorage.getItem('token')
+          token = getCookie('AUTHENTICATE_TOKEN')
         }
         return new Promise((resolve, reject) => {
           axios.request({
@@ -78,7 +78,7 @@ export function createAPI() {
         if(target == "/api/authenticate/login"){
           token = ''
         }else{
-          token = sessionStorage.getItem('token')
+          token = getCookie('AUTHENTICATE_TOKEN')
         }
         return new Promise((resolve, reject) =>{
           axios.post(target, transformRequest(options),{headers:{'Content-Type': 'multipart/form-data','Authorization': token}}).then(res => {

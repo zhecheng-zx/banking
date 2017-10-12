@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import axios from 'axios'
+import {getCookie,delCookie,setCookie} from "../util/cookie"
 
 Vue.use(Router)
 
@@ -91,7 +93,7 @@ const bindEmail = () => import('../views/safetyInfo/bindEmail.vue')
 const updateEmail = () => import('../views/safetyInfo/updateEmail.vue')
 
 export function createRouter () {
-  return new Router({
+  let routes = {
     mode: 'history',
     scrollBehavior: () => ({ y: 0 }),
     routes: [
@@ -233,7 +235,7 @@ export function createRouter () {
           }
         ]
       },
-      { path: '/login', component: login},
+      { path: '/login', component: login, meta: {requireAuth: true }},
       { path: '/forgotPassword', component: forgotPassword},
       { path: '/phoneBackPass', component: phoneBackPass},
       { path: '/emailBackPass', component: emailBackPass},
@@ -242,7 +244,9 @@ export function createRouter () {
       { path: '/updatePhonePassword', component: updatePhonePassword},
       { path: '/bindEmail', component: bindEmail},
       { path: '/updateEmail', component: updateEmail},
-      { path: '/', redirect: '/login' }
+      { path: '/', redirect: '/login'}
     ]
-  })
+  }
+  const router = new Router(routes)
+  return router
 }

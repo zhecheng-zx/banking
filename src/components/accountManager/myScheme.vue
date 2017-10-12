@@ -2,7 +2,7 @@
 * Created by zhangxin on 2017/9/5.
 */
 <template>
-  <div>
+  <div v-loading.body="loading">
     <div class="block">
       <div class="block-item">
         <h3 class="text">我的定制方案</h3>
@@ -144,7 +144,7 @@
       return {
         tableData: [],
         currentPage: 1,
-
+        loading: true,
         pickerOptions0: {
           disabledDate(time) {
             return time.getTime() < Date.now() - 8.64e7;
@@ -156,6 +156,7 @@
     methods: {
       getCustomList(){
         let _this = this
+        _this.loading = true
         _this.$store.dispatch("ANTIFRAUD_CUSTOM").then((res,req) => {
           if(res.success){
             _this.tableData = res.data
@@ -167,6 +168,9 @@
               duration: '2000'
             })
           }
+          _this.loading = false
+        }).catch((error)=>{
+          _this.loading = false
         })
       },
       addNewCustom(){

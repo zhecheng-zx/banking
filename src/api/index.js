@@ -407,6 +407,14 @@ export function phone_send(param) {
   return api.post('/api/phone/send', param)
 }
 /**
+ * 新手机号发送短信验证码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function phone_send1(param) {
+  return api.post('/api/phone/send2', param)
+}
+/**
  * (更换手机号)第一页验证
  * @param param
  * @returns {*|AxiosPromise}
@@ -439,12 +447,68 @@ export function email_change(param) {
   return api.post('/api/email/change', param)
 }
 /**
- * 邮件发送验证码
+ * 绑定邮箱  邮件发送验证码
  * @param param
  * @returns {*|AxiosPromise}
  */
 export function email_send(param) {
   return api.post('/api/email/send', param)
+}
+/**
+ * 修改邮箱 邮件发送验证码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function email_send2(param) {
+  return api.post('/api/email/send2', param)
+}
+/**
+ * 邮箱找回密码 手机发送验证码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function email_sendBack(param) {
+  return api.post('/api/email/sendBack', param)
+}
+/**
+ * 邮箱找回密码 第一步
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function email_stepBack1(param) {
+  return api.post('/api/email/stepBack', param)
+}
+/**
+ * 邮箱找回密码 第二步
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function email_stepBack2(param) {
+  return api.post('/api/email/stepBack2', param)
+}
+/**
+ * 手机号找回密码 手机发送验证码
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function phone_sendBack(param) {
+  return api.post('/api/phone/sendBack', param)
+}
+/**
+ * 手机号找回密码 第一步
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function phone_stepBack1(param) {
+  return api.post('/api/phone/stepBack1', param)
+}
+/**
+ * 手机号找回密码 第二步
+ * @param param
+ * @returns {*|AxiosPromise}
+ */
+export function phone_stepBack2(param) {
+  return api.post('/api/phone/stepBack2', param)
 }
 // export function getYZM() {
 //   let url = ''

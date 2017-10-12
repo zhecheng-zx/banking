@@ -55,11 +55,19 @@ import {
   security_dataStatus,
   phone_bind,
   phone_send,
+  phone_send1,
   phone_step1,
   phone_step2,
+  phone_sendBack,
+  phone_stepBack1,
+  phone_stepBack2,
   email_bind,
   email_change,
-  email_send
+  email_send,
+  email_send2,
+  email_sendBack,
+  email_stepBack1,
+  email_stepBack2
 } from '../api'
 import data from '../data/index-data-config'
 import userInfoData from '../data/userInfo-data-config'
@@ -664,6 +672,11 @@ export default {
       return res
     })
   },
+  PHONE_SEND1: ({commit, dispatch, state}, { param }) => {
+    return phone_send1(param).then((res,req)=>{
+      return res
+    })
+  },
   PHONE_STEP1: ({commit, dispatch, state}, { param }) => {
     return phone_step1(param).then((res,req)=>{
       return res
@@ -689,6 +702,53 @@ export default {
       return res
     })
   },
+  EMAIL_SEND2: ({commit, dispatch, state}, { param }) => {
+    return email_send2(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 手机号找回密码  发送手机验证码
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {*|Thenable<U>|Promise<U>|Promise.<TResult>}
+   * @constructor
+   */
+  PHONE_SENDBACK: ({commit, dispatch, state}, { param }) => {
+    return phone_sendBack(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 手机号找回密码   第一步
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {*|Thenable<U>|Promise<U>|Promise.<TResult>}
+   * @constructor
+   */
+  PHONE_STEPBACK1: ({commit, dispatch, state}, { param }) => {
+    return phone_stepBack1(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 手机号找回密码    第二步
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {*|Thenable<U>|Promise<U>|Promise.<TResult>}
+   * @constructor
+   */
+  PHONE_STEPBACK2: ({commit, dispatch, state}, { param }) => {
+    return phone_stepBack2(param).then((res,req)=>{
+      return res
+    })
+  },
   /**
    * 登录页获取token
    * @param commit
@@ -701,7 +761,52 @@ export default {
     return authenticate_token().then((res,req)=>{
       return res
     })
-  }
+  },
+  /**
+   * 邮箱找回密码  发送手机验证码
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {*|Thenable<U>|Promise<U>|Promise.<TResult>}
+   * @constructor
+   */
+  EMAIL_SENDBACK: ({commit, dispatch, state}, { param }) => {
+    return email_sendBack(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 邮箱找回密码   第一步
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {*|Thenable<U>|Promise<U>|Promise.<TResult>}
+   * @constructor
+   */
+  EMAIL_STEPBACK1: ({commit, dispatch, state}, { param }) => {
+    return email_stepBack1(param).then((res,req)=>{
+      return res
+    })
+  },
+  /**
+   * 邮箱找回密码    第二步
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @param param
+   * @returns {*|Thenable<U>|Promise<U>|Promise.<TResult>}
+   * @constructor
+   */
+  EMAIL_STEPBACK2: ({commit, dispatch, state}, { param }) => {
+    return email_stepBack2(param).then((res,req)=>{
+      return res
+    })
+  },
+  // email_sendBack,
+  // email_stepBack1,
+  // email_stepBack2
   // FETCH_YZM_IMG: ({commit, dispatch, state})=>{
   //   // commit('SET_YZM_URL', { url })
   //   return getYZM().then(url => commit('SET_YZM_IMG', { url }))

@@ -2,7 +2,7 @@
 * Created by zhangxin on 2017/9/5.
 */
 <template>
-  <div>
+  <div v-loading.body="loading">
     <div class="block">
       <div class="block-item">
         <h3 class="text">消费记录</h3>
@@ -89,7 +89,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <p class="text-right pd35">消费统计：累计消费<span class="text-red">{{ consumption.num}}</span>笔，共消费<span class="text-red">{{ consumption.total}}</span>元</p>
+        <p class="text-right pd35">消费统计：累计消费<span class="text-red">{{ consumption.num}}</span>笔，共消费<span class="text-red">{{ consumption.total.toFixed(2)}}</span>元</p>
         <div class="pagination-box clearfix">
           <el-pagination
             @size-change="handleSizeChange"
@@ -192,6 +192,7 @@
   export default{
     data () {
       return {
+        loading: true,
         tableData: [],
         pickerOptions0: {
           disabledDate(time) {
@@ -215,7 +216,10 @@
           pageSize: 10
         },
         total: 0,
-        consumption:{},
+        consumption:{
+          num: 0,
+          total: 0.00
+        },
         current: ''
       }
     },
@@ -243,12 +247,19 @@
       getList(){
         let _this = this,
         param = {}
+        _this.loading = true
         param = $.extend({},{},_this.params)
         param.dateStart = ''+ param.dateStart!='' ? new Date(param.dateStart).Format('yyyy-MM-dd'): ''
         param.dateEnd = ''+ param.dateEnd!='' ? new Date(param.dateEnd).Format('yyyy-MM-dd'): ''
         _this.$store.dispatch('TRADING_SEARCH',{ param }).then((res,req) => {
           if(res.success){
-            _this.tableData=res.data.page.list
+              console.log(res)
+            res.data.page.list.map((item,index)=>{
+              let obj = {}
+              obj = $.extend({},item)
+              obj.realAmount = obj.realAmount.toFixed(2)
+              _this.tableData.push(obj)
+            })
             _this.total = res.data.page.total
             _this.consumption = res.data.consumption
           }else{
@@ -259,7 +270,9 @@
               duration: '2000'
             })
           }
+        _this.loading = false
         }).catch((error)=>{
+          _this.loading = false
         })
       },
       quickSearch(param){

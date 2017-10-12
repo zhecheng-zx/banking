@@ -39,6 +39,7 @@
   </div>
 </template>
 <script>
+  import {getCookie,delCookie} from './util/cookie'
   export default {
     data(){
       return {
@@ -51,7 +52,7 @@
     },
     beforeMount(){
       let _this=this;
-      if(this.$route.path==='\/login'){
+      if(this.$route.path==='\/login'||this.$route.path==='\/phoneBackPass'||this.$route.path==='\/emailBackPass'||this.$route.path==='\/forgotPassword'){
         this.$store.dispatch("MANAGER_LOGIN_STATE",{
           loginStatus:false
         }).then(() => {
@@ -82,21 +83,26 @@
         })
       },
       clearSession(){
+        delCookie("AUTHENTICATE_TOKEN")
         localStorage.removeItem('userName')
         sessionStorage.removeItem('ANTIFRAUD_SQUERYONE_tradeId')
         sessionStorage.removeItem('_import_tradeId')
         sessionStorage.removeItem('cost')
         sessionStorage.removeItem('customTempId')
         sessionStorage.removeItem('dataCount')
-        sessionStorage.removeItem('token')
         sessionStorage.removeItem('from_page')
       }
     },
     watch: {
       $route(){
-        if(this.$route.path==='\/login'){
+        if(this.$route.path==='\/login'||this.$route.path==='\/phoneBackPass'||this.$route.path==='\/emailBackPass'||this.$route.path==='\/forgotPassword'){
           this.isLogin = false
         }else{
+          this.$store.dispatch("SECURITY_CHECKSESSION").then((res)=>{
+              if(!res.success){
+                this.$router.push({path:'/'})
+              }
+          })
           this.isLogin = true
         }
         this.userName = localStorage.getItem('userName')

@@ -132,6 +132,7 @@
    * import "vue-style-loader!css-loader!sass-loader!../../assets/vendor/iCkeck-v1.0.2/css/skins/square/blue.css";
    * import loginButton from './components/loginButton.vue';
    */
+  import {getCookie,delCookie,setCookie} from '../../util/cookie'
   import 'font-awesome/css/font-awesome.css'
   export default{
     data () {
@@ -201,7 +202,6 @@
       }
     },
     beforeMount () {
-      this.load()
       this.getToken()
     },
     watch: {
@@ -231,17 +231,18 @@
             param.username = _this.param.username
             param.password = hex_md5(_this.param.password)
             param.captcha = _this.param.captcha
-            localStorage.setItem("userName",param.username)
             _this.$store.dispatch('LOGIN',{
               param
             }).then((res,req)=>{
               if(res.success){
-                sessionStorage.setItem("token",res.data);
+                localStorage.setItem("userName",param.username)
+                setCookie("AUTHENTICATE_TOKEN",res.data)
                 _this.loginStatus = true
                 _this.load()
-                sessionStorage.removeItem('imgToken')
               }else{
-                _this.changeImg()
+                delCookie("AUTHENTICATE_TOKEN")
+                _this.getToken()
+//                _this.changeImg()
               }
               _this.$notify({
                 title: '提示信息',
@@ -279,10 +280,19 @@
         })
       },
       getToken(){
-        this.$store.dispatch("AUTHENTICATE_TOKEN").then((res)=>{
-          this.imgToken = sessionStorage.getItem('imgToken')
-          this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+this.imgToken
-        })
+        if(getCookie("AUTHENTICATE_TOKEN")==undefined||getCookie("AUTHENTICATE_TOKEN")==null||getCookie("AUTHENTICATE_TOKEN")==""){
+          this.$store.dispatch("AUTHENTICATE_TOKEN").then((res)=>{
+            this.imgToken = getCookie("AUTHENTICATE_TOKEN")
+            this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+'&JSESSIONID='+this.imgToken
+            this.load()
+          })
+        }else{
+          this.imgToken = getCookie("AUTHENTICATE_TOKEN")
+          setTimeout(()=>{
+            this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+'&JSESSIONID='+this.imgToken
+            this.load()
+          },20)
+        }
       }
     }
   }

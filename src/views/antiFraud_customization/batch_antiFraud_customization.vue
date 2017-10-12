@@ -25,8 +25,10 @@
                 :headers="headers"
                 :data="params"
                 name="files"
+                ref="upload"
                 action="/api/excel/import"
                 :multiple="multiple"
+                :before-upload="beforeUpload"
                 :on-success="changePrices"
                 :on-change="handleChange"
                 accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -39,7 +41,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">本次查询所需费用：</label>
             <div class="form-control-static col-md-5">
-              <span class="text-red">{{ cost }}</span>元
+              <span class="text-red">{{ cost.toFixed(2) }}</span>元
             </div>
           </div>
           <div class="form-group">
@@ -73,6 +75,7 @@
    * import "vue-style-loader!css-loader!sass-loader!../../assets/vendor/iCkeck-v1.0.2/css/skins/square/blue.css";
    * import loginButton from './components/loginButton.vue';
    */
+  import {getCookie} from '../../util/cookie'
   export default{
     data () {
       return {
@@ -81,7 +84,7 @@
         btn_loading: true,
         fileName: 'javascript:void(0);',
         params: {
-          solutionId: 7,
+          antifraudCustomSolutionId: '',
         },
         multiple: false,
         headers:{
@@ -94,25 +97,75 @@
         },
         Authorization: '',
         customSolutionId: '',
-        fullscreenLoading:false
+        fullscreenLoading:false,
+        price: false,
+        checked:false,
       }
     },
     components: {},
     methods: {
+      checkInput(){
+        if(!this.price){
+          this.$notify({
+            title: '提示信息',
+            message: "请导入正确的excel文件",
+            type: 'warning',
+            duration: '1500'
+          });
+          return false
+        }
+        if(this.param.payPassword==""||this.param.payPassword==null||this.param.payPassword==undefined){
+          this.$notify({
+            title: '提示信息',
+            message: "请输入正确的支付密码",
+            type: 'warning',
+            duration: '1500'
+          });
+          return false
+        }
+        if(!this.checked){
+          this.$notify({
+            title: '提示信息',
+            message: "请阅读并勾选《用户授权协议》",
+            type: 'warning',
+            duration: '1500'
+          });
+          return false
+        }
+        return true
+      },
+      beforeUpload(){
+        this.fullscreenLoading = true
+      },
       handleChange(file, fileList) {
-        this.fileList = fileList.slice(-1);
+        this.fileList = fileList.slice(-1)
       },
       changePrices(response){
+        let _this = this
+        _this.fullscreenLoading = false
         if(response.success){
-          this.cost = response.data.cost
-          this.param.tradeId = response.data.tradeId
+          _this.price = true
+          _this.cost = response.data.cost
+          _this.param.tradeId = response.data.tradeId
           sessionStorage.setItem("cost",response.data.cost)
           sessionStorage.setItem("dataCount",response.data.dataCount)
+        }else{
+          _this.fileList = _this.fileList.slice(-1);
+          _this.price = false
         }
+        _this.$notify({
+          title: '提示信息',
+          message: response.success ? "上传成功" :response.msg,
+          type: response.success ? 'success' : 'error',
+          duration: '2000'
+        });
       },
       searchResult(){
         let param = {}
         let _this = this
+        if(!_this.checkInput()){
+          return
+        }
         _this.fullscreenLoading = true
         param.customSolutionId = parseInt(sessionStorage.getItem("customTempId"))
         param.tradeId = _this.param.tradeId
@@ -135,11 +188,12 @@
       }
     },
     beforeMount () {
-      let token = sessionStorage.getItem('token')
+      let token = getCookie('AUTHENTICATE_TOKEN')
       this.headers['Authorization'] = token
       this.Authorization = token
       let customTempId = sessionStorage.getItem("customTempId")
       this.customSolutionId = customTempId
+      this.params.antifraudCustomSolutionId = customTempId
     }
   }
 </script>

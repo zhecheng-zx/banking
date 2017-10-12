@@ -78,8 +78,8 @@
         },{
           type: '支付密码',
           message: '保障账户安全，建议密码由6-16位数字、字母、下划线中的2种组合',
-          status: '已设置',
-          handle: '修改',
+          status: '未设置',
+          handle: '立即绑定',
           link: 'updatePayPassword'
         },{
           type: '绑定手机',
@@ -94,7 +94,7 @@
           handle: '立即绑定',
           link: 'bindEmail',
 //          link: 'updateEmail'
-        }]
+        }],
       }
     },
     components: {},
@@ -102,17 +102,20 @@
       getDataSource(){
         let _this = this
         _this.$store.dispatch('SECURITY_DATASTATUS').then((res)=>{
-          console.log(res)
           if(res.data.email==1){
             //根据数据显示状态 0 绑定1 更换2 立即设置
             _this.tableData[3].handle = "更换"
             _this.tableData[3].status = "已绑定"
             _this.tableData[3].link = "updateEmail"
           }
-          if(res.data.payPwd==2){
+          if(res.data.payPwd==1){
             //根据数据显示状态 0 绑定1 更换2 立即设置
-            _this.tableData[1].handle = "立即设置"
+            _this.tableData[1].status = "已设置"
+            _this.tableData[1].handle = "更换"
             _this.tableData[1].link = "updatePayPassword"
+          }
+          if(res.data.mobile){
+              _this.tableData[2].message = '您绑定的手机号码：'+res.data.mobile
           }
         })
       }

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { Notification } from 'element-ui'
-
+import {getCookie,delCookie,setCookie} from '../util/cookie'
 let transformRequest = function (data) {
   let ret = ''
   for (let it in data) {
@@ -10,37 +10,39 @@ let transformRequest = function (data) {
 }
 
 export function createAPI() {
-  let api;
+  let api,flag=true
   axios.defaults.withCredentials = true
   axios.defaults.timeout = 60000
-
   axios.interceptors.response.use((res) => {
     if(res.status >= 200 && res.status < 300){
       if(res.headers['access-control-expose-headers']) {
-        sessionStorage.setItem('imgToken', res.headers[res.headers['access-control-expose-headers']])
+        setCookie('AUTHENTICATE_TOKEN', res.headers[res.headers['access-control-expose-headers']])
       }
-      // }else{
-      //   sessionStorage.removeItem('imgToken')
-      // }
       return res
     }
     return Promise.reject(res)
   }, (error) => {
     // 网络异常
+    if(error.request.responseURL.indexOf('token')>=0){
+      return
+    }
+    if(flag) {
+      Notification({
+        title: '提示信息',
+        message: "登录超时，请重新登录",
+        type: 'error',
+        duration: '2000'
+      });
+      flag = false
+    }
+    delCookie("AUTHENTICATE_TOKEN")
     localStorage.removeItem('userName')
     sessionStorage.removeItem('ANTIFRAUD_SQUERYONE_tradeId')
     sessionStorage.removeItem('_import_tradeId')
     sessionStorage.removeItem('cost')
     sessionStorage.removeItem('customTempId')
     sessionStorage.removeItem('dataCount')
-    sessionStorage.removeItem('token')
     sessionStorage.removeItem('from_page')
-    Notification({
-      title: '提示信息',
-      message: "登录超时，请重新登录",
-      type: 'error',
-      duration: '2000'
-    });
     setTimeout(()=>{
       window.location.href = '/'
     },2000)
@@ -55,7 +57,7 @@ export function createAPI() {
         if(target == "/api/authenticate/login"){
           token = ''
         }else{
-          token = sessionStorage.getItem('token')
+          token = getCookie('AUTHENTICATE_TOKEN')
         }
         const suffix = Object.keys(params).map(name => {
           return `${name}=${params[name]}`
@@ -88,12 +90,7 @@ export function createAPI() {
         })
       },
       post: function (target, options = {}) {
-        let token = ''
-        if(target == "/api/authenticate/login"){
-          token = sessionStorage.getItem('imgToken')
-        }else{
-          token = sessionStorage.getItem('token')
-        }
+        let token = getCookie('AUTHENTICATE_TOKEN')
         return new Promise((resolve, reject) =>{
           axios.post(target, transformRequest(options),{headers:{'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8','Authorization': token}}).then(res => {
             resolve(res.data)
@@ -107,7 +104,7 @@ export function createAPI() {
         if(target == "/api/authenticate/login"){
           token = ''
         }else{
-          token = sessionStorage.getItem('token')
+          token = getCookie('AUTHENTICATE_TOKEN')
         }
         return new Promise((resolve, reject) =>{
           axios.post(target, transformRequest(options),{headers:{'Content-Type': 'multipart/form-data','Authorization': token}}).then(res => {

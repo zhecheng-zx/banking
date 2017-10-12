@@ -2,7 +2,7 @@
 * Created by zhangxin on 2017/9/5.
 */
 <template>
-  <div>
+  <div v-loading.body="loading">
     <div class="block">
       <div class="block-item">
         <h3 class="text">充值记录</h3>
@@ -70,7 +70,7 @@
             label="充值时间">
           </el-table-column>
         </el-table>
-        <p class="text-right pd35">充值统计：累计充值<span class="text-red">{{ statistics.count }}</span>笔，共充值<span class="text-red">{{ statistics.sum }}</span>元</p>
+        <p class="text-right pd35">充值统计：累计充值<span class="text-red">{{ statistics.count }}</span>笔，共充值<span class="text-red">{{ statistics.sum.toFixed(2) }}</span>元</p>
         <div class="pagination-box clearfix">
           <el-pagination
             @size-change="handleSizeChange"
@@ -161,6 +161,7 @@
   export default{
     data () {
       return {
+        loading: true,
         tableData: [],
         pickerOptions0: {
           disabledDate(time) {
@@ -182,7 +183,10 @@
           pageSize: 10
         },
         total: 0,
-        statistics:{},
+        statistics:{
+            count: 0,
+            sum: 0.00
+        },
         current: ''
       }
     },
@@ -216,12 +220,18 @@
       getList(){
         let _this = this,
           param = {}
+          _this.loading = true
           param = $.extend({},{},_this.params)
           param.dateStart = ''+ param.dateStart!='' ? new Date(param.dateStart).Format('yyyy-MM-dd'): ''
           param.dateEnd = ''+ param.dateEnd!='' ? new Date(param.dateEnd).Format('yyyy-MM-dd'): ''
         _this.$store.dispatch('RECHARGE_SEARCH',{ param }).then((res,req) => {
           if(res.success){
-            _this.tableData=res.data.page.list
+            res.data.page.list.map((item,index)=>{
+              let obj = {}
+              obj = $.extend({},item)
+              obj.amount = obj.amount.toFixed(2)
+              _this.tableData.push(obj)
+            })
             _this.total = res.data.page.total
             _this.statistics = res.data.statistics
           }else{
@@ -232,7 +242,9 @@
               duration: '2000'
             })
           }
+        _this.loading = false
         }).catch((error)=>{
+          _this.loading = false
         })
       },
       quickSearch(param){

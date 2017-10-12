@@ -2,7 +2,7 @@
 * Created by zhangxin on 2017/9/5.
 */
 <template>
-  <div>
+  <div v-loading.body="loading">
     <div class="block" v-if="articleId == -1">
       <div class="block-item">
         <h3 class="text">消息中心</h3>
@@ -157,6 +157,7 @@
   export default{
     data () {
       return {
+        loading: true,
         tableData: [],
         params: {
           pageNum: 1,
@@ -214,6 +215,7 @@
       getList(){
         let _this = this,
         param = {}
+        _this.loading = true
         param = $.extend({},{},_this.params)
         _this.$store.dispatch('MESSAGE',{ param }).then((res,req) => {
           if(res.success){
@@ -230,7 +232,9 @@
               duration: '2000'
             })
           }
+          _this.loading = false
         }).catch((error)=>{
+          _this.loading = false
         })
       },
       showMessage(params){

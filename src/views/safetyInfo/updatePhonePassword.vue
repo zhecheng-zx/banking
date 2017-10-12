@@ -60,7 +60,7 @@
                   </el-col>
                   <el-col class="line" :span="1">&nbsp;</el-col>
                   <el-col :span="8">
-                    <el-button size="large">发送验证码</el-button>
+                    <el-button size="large" @click="sendMessage()" :disabled="disabled1">{{sendBtn1}}</el-button>
                   </el-col>
                 </el-form-item>
                 <el-form-item label=" ">
@@ -79,7 +79,7 @@
                   </el-col>
                   <el-col class="line text-center" :span="1">&nbsp;</el-col>
                   <el-col :span="4">
-                    <img :src="imgUrl" @click="changeImg2()" />
+                    <img :src="imgUrl2" @click="changeImg2()" />
                   </el-col>
                 </el-form-item>
                 <el-form-item label="短信验证码：" prop="smsCode">
@@ -88,7 +88,7 @@
                   </el-col>
                   <el-col class="line" :span="1">&nbsp;</el-col>
                   <el-col :span="8">
-                    <el-button size="large">发送验证码</el-button>
+                    <el-button size="large" @click="sendMessage2()" :disabled="disabled2">{{sendBtn2}}</el-button>
                   </el-col>
                 </el-form-item>
                 <el-form-item label=" ">
@@ -104,7 +104,7 @@
                 <!--秒后自动跳转到安全中心-->
               <!--</p>-->
               <div class="btn-box">
-                <router-link class="btn btn-default btn-lg" to="/safetyInfo">立即前往</router-link>
+                <router-link class="btn btn-default btn-lg" to="/safetyInfo">立即前往安全中心</router-link>
               </div>
             </div>
           </div>
@@ -187,10 +187,17 @@
    * import "vue-style-loader!css-loader!sass-loader!../../assets/vendor/iCkeck-v1.0.2/css/skins/square/blue.css";
    * import loginButton from './components/loginButton.vue';
    */
+  import {getCookie} from '../../util/cookie'
   export default{
     data () {
       return {
         step: 1,
+        timer1:180,
+        timer2:180,
+        disabled1: false,
+        sendBtn1: '发送验证码',
+        disabled2: false,
+        sendBtn2: '发送验证码',
         form: {
           mobile: '',
           vcode: '',
@@ -210,7 +217,7 @@
           smsCode: [{
             required:true,message:'请输入短信验证码',trigger:'blur'
           },{
-            max:6,min:4,message:'长度为4-6位',trigger:'blur'
+            max:6,min:6,message:'长度为6位',trigger:'blur'
           }]
         },
         form2: {
@@ -229,11 +236,12 @@
         let _this = this
         _this.$refs[formName].validate((valid) => {
           if (valid) {
-            if(this.step == 3){
-              this.step = 1
-              return
+            if(this.step ==1){
+              this.conform1()
             }
-            this.step = this.step+1
+            if(this.step ==2){
+              this.conform2()
+            }
           } else {
             return false;
           }
@@ -243,21 +251,112 @@
         let _this = this
         _this.imgUrl = ''
         setTimeout(function () {
-          _this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+_this.token
+          _this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+'&JSESSIONID='+_this.token
         },50)
       },
       changeImg2(){
         let _this = this
         _this.imgUrl2 = ''
         setTimeout(function () {
-          _this.imgUrl2 = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+_this.token
+          _this.imgUrl2 = '/api/security/captcha?t='+new Date().getTime()+'&JSESSIONID='+_this.token
         },50)
+      },
+      /*发送第一个短信验证码*/
+      sendMessage(){
+        let param = {},_this = this
+        _this.disabled1 = true
+        if(_this.form.mobile.length!=11||_this.form.vcode.length!=4){
+          _this.disabled1 = false
+          return
+        }
+        param.mobile = _this.form.mobile;
+        setTimeout(()=>{
+          _this.sendBtn1 = '发送验证码'
+          _this.disabled1 = false
+          clearInterval(timer)
+        },180000)
+        let timer = setInterval(()=>{
+          _this.timer1--
+          _this.sendBtn1 =_this.timer1+"s,后重新发送"
+        },1000)
+        _this.$store.dispatch("PHONE_SEND",{ param }).then((res,req)=>{
+          _this.$notify({
+            title: '提示',
+            message: res.success?res.data:res.msg,
+            type: res.success?"success":"error"
+          });
+        })
+      },
+      /*发送第二个短信验证码*/
+      sendMessage2(){
+        let param = {},_this = this
+        _this.disabled2 = true
+        if(_this.form2.mobile.length!=11||_this.form2.vcode.length!=4){
+          _this.disabled2 = false
+          return
+        }
+        param.mobile = _this.form2.mobile;
+        setTimeout(()=>{
+          _this.sendBtn2 = '发送验证码'
+          _this.disabled2 = false
+          clearInterval(timer2)
+        },180000)
+        let timer2 = setInterval(()=>{
+          _this.timer2--
+          _this.sendBtn2 =_this.timer2+"s,后重新发送"
+        },1000)
+        _this.$store.dispatch("PHONE_SEND1",{ param }).then((res,req)=>{
+          _this.$notify({
+            title: '提示',
+            message: res.success?res.data:res.msg,
+            type: res.success?"success":"error"
+          });
+        })
+      },
+      /**第一页下一步*/
+      conform1(){
+          let _this = this, param = {}
+          param = $.extend({},_this.form)
+          _this.$store.dispatch("PHONE_STEP1",{ param }).then((res,req)=>{
+            if(res.success){
+              _this.step = 2
+              _this.changeImg2()
+            }else{
+              _this.step = 1
+              _this.changeImg()
+            }
+            _this.$notify({
+              title: '提示信息',
+              message: res.msg,
+              type: res.success?'success':'error',
+              duration: '2000'
+            })
+          })
+      },
+      /**第一页下一步*/
+      conform2(){
+          let _this = this, param = {}
+          param = $.extend({},_this.form2)
+          _this.$store.dispatch("PHONE_STEP2",{ param }).then((res,req)=>{
+            if(res.success){
+              _this.step = 3
+            }else{
+              _this.step = 2
+              _this.changeImg2()
+            }
+            _this.$notify({
+              title: '提示信息',
+              message: res.msg,
+              type: res.success?'success':'error',
+              duration: '2000'
+            })
+          })
       }
     },
     beforeMount(){
-      this.token = sessionStorage.getItem('token')
-      this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+this.token
-      this.imgUrl2 = '/api/security/captcha?t='+new Date().getTime()+';JSESSIONID='+this.token
+      this.token = getCookie('AUTHENTICATE_TOKEN')
+      this.imgUrl = '/api/security/captcha?t='+new Date().getTime()+'&JSESSIONID='+this.token
+//      this.imgUrl2 = '/api/security/captcha?t='+new Date().getTime()+'&JSESSIONID='+this.token
     }
   }
 </script>

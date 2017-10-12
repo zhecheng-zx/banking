@@ -14,7 +14,7 @@
             </h2>
           </div>
           <div class="panel-body">
-            <p>需要查询数据为<span class="text-red">{{dataBase.result.count}}</span>条，已查询到<span class="text-red">{{dataBase.result.count}}</span>条，预付金额为<span class="text-red">{{dataBase.result.prepayment}}</span>元，实付费用为<span class="text-red">{{dataBase.result.totalAmount}}</span>元。</p>
+            <p>需要查询数据为<span class="text-red">{{dataBase.result.count}}</span>条，已查询到<span class="text-red">{{dataBase.result.count}}</span>条，预付金额为<span class="text-red">{{new Number(dataBase.result.prepayment).toFixed(2)}}</span>元，实付费用为<span class="text-red">{{new Number(dataBase.result.totalAmount).toFixed(2)}}</span>元。</p>
             <div class="table-box">
               <h3>输入信息</h3>
               <table class="table table-bordered table-striped text-center">
@@ -27,7 +27,7 @@
               </table>
             </div>
             <div class="table-box">
-              <h3>反欺诈（定制版）<span class="text-red">{{dataBase.result.totalAmount}}元</span><span class="red-var">查询完成</span></h3>
+              <h3>反欺诈（定制版）<span class="text-red">{{new Number(dataBase.result.totalAmount).toFixed(2)}}元</span><span class="red-var">查询完成</span></h3>
               <table class="table table-bordered table-striped text-center">
                 <tbody>
                 <tr>
@@ -69,7 +69,10 @@
         msg: '查询结果',
         ANTIFRAUD_SQUERYONE_tradeId: '',
         dataBase:{
-          result:{},
+          result:{
+            totalAmount:0,
+            prepayment:0,
+          },
           param: {},
           desc: ''
         }

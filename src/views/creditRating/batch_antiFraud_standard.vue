@@ -39,7 +39,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">本次查询所需费用：</label>
             <div class="form-control-static col-md-5">
-              <span class="text-red">{{ cost.toFixed(2) }}</span>元
+              <span class="text-red">{{ new Number(cost).toFixed(2) }}</span>元
             </div>
           </div>
           <div class="form-group">
@@ -137,9 +137,9 @@
       changePrices(response){
         let _this = this
         _this.fullscreenLoading = false
-        if(response.success){
+        if(response.success&&response.data!=null){
           _this.price = true
-          _this.cost = response.data.cost
+          _this.cost = new Number(response.data.cost)
           _this.param.tradeId = response.data.tradeId
           sessionStorage.setItem("cost",response.data.cost)
           sessionStorage.setItem("dataCount",response.data.dataCount)

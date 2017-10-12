@@ -6,7 +6,7 @@
     <div class="container">
       <div class="white-bg">
         <h5 class="text-center">数据查询已提交，3-30分钟反馈查询结果，请耐心等待！</h5>
-        <p class="text-center">本次批量查询实际查询数据是<span class="text-red">{{ dataCount }}</span>条，预付金额为<span class="text-red">{{ cost }}</span>元</p>
+        <p class="text-center">本次批量查询实际查询数据是<span class="text-red">{{ dataCount }}</span>条，预付金额为<span class="text-red">{{ new Number(cost).toFixed(2) }}</span>元</p>
         <p class="text-center">具体查询所需金额以实际查询数据为准</p>
         <p class="text-center"> 倒计时 <span class="text-red times">{{ timeOut }}</span> 秒后自动跳转到用户中心-数据查询页面</p>
       </div>

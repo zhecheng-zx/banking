@@ -19,7 +19,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">支付金额：</label>
             <div class="col-md-5">
-              <div class="form-control-static"><strong class="text-red">{{ price }}</strong>元</div>
+              <div class="form-control-static"><strong class="text-red">{{ new Number(price).toFixed(2) }}</strong>元</div>
             </div>
           </div>
           <div class="form-group">
@@ -93,12 +93,6 @@
               duration: '1000'
             });
           }).catch((error)=>{
-            _this.$notify({
-              title: '提示信息',
-              message: error.message,
-              type: 'error',
-              duration: '1000'
-            });
             _this.fullscreenLoading = false
           })
         }
@@ -139,7 +133,7 @@
         _this.fullscreenLoading = true
         _this.$store.dispatch('ANTIFRAUD_CUSTOM_CHARGE',{ param }).then((res,req)=>{
           if(res.success){
-            _this.price = res.data.toFixed(2)
+            _this.price = res.data
           }
           _this.fullscreenLoading = false
         }).catch((error)=>{

@@ -63,6 +63,12 @@
           loginStatus:true
         }).then(() => {
           isLog();
+          this.$store.dispatch("SECURITY_CHECKSESSION").then((res) => {
+            if (!res.success) {
+              this.clearSession()
+              this.$router.push({path: '/login'})
+            }
+          })
         })
       }
       var isLog = ()=>{
@@ -100,6 +106,7 @@
         }else{
           this.$store.dispatch("SECURITY_CHECKSESSION").then((res)=>{
               if(!res.success){
+                this.clearSession()
                 this.$router.push({path:'/'})
               }
           })

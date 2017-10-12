@@ -37,7 +37,7 @@
           <div class="form-group">
             <label class="col-md-4 control-label">支付金额：</label>
             <div class="col-md-5">
-              <div class="form-control-static"><strong class="text-red">{{ price }}</strong>元</div>
+              <div class="form-control-static"><strong class="text-red">{{ new Number(price).toFixed(2) }}</strong>元</div>
             </div>
           </div>
           <div class="form-group">
@@ -145,7 +145,7 @@
         _this.fullscreenLoading = true
         _this.$store.dispatch('COMPUTE_SINGLE',{ param }).then((res,req)=>{
           if(res.success){
-            _this.price = res.data.price.toFixed(2)
+            _this.price = res.data.price
           }
           _this.fullscreenLoading = false
         }).catch((error)=>{

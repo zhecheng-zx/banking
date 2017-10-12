@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {getCookie} from '../../util/cookie'
+import {getCookie} from '../util/cookie'
 const isProd = process.env.NODE_ENV === 'production'
 
 let transformRequest = function (data) {

@@ -91,7 +91,7 @@ const updatePayPassword = () => import('../views/safetyInfo/updatePayPassword.vu
 const updatePhonePassword = () => import('../views/safetyInfo/updatePhonePassword.vue')
 const bindEmail = () => import('../views/safetyInfo/bindEmail.vue')
 const updateEmail = () => import('../views/safetyInfo/updateEmail.vue')
-
+const userAgreement =() => import('../views/userAgreement.vue')
 export function createRouter () {
   let routes = {
     mode: 'history',
@@ -244,6 +244,7 @@ export function createRouter () {
       { path: '/updatePhonePassword', component: updatePhonePassword},
       { path: '/bindEmail', component: bindEmail},
       { path: '/updateEmail', component: updateEmail},
+      { path: '/userAgreement',component:userAgreement},
       { path: '/', redirect: '/login'}
     ]
   }

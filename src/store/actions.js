@@ -6,6 +6,7 @@
 import {
   login,
   logout,
+  clause,
   authenticate_token,
   antifraud_squeryone,
   antifraud_bqueryone,
@@ -117,6 +118,19 @@ export default {
    */
   AUTHENTICATE_LOGOUT:({ commit, dispatch, state}) => {
     return logout().then((res,req) => {
+      return res
+    })
+  },
+  /**
+   * 清除第一次登录的弹窗
+   * @param commit
+   * @param dispatch
+   * @param state
+   * @returns {Thenable<U>|Promise<U>|Promise.<TResult>|*}
+   * @constructor
+   */
+  AUTHENTICATE_CLAUSE:({ commit, dispatch, state}) => {
+    return clause().then((res,req) => {
       return res
     })
   },

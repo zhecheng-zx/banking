@@ -204,7 +204,7 @@
         sendBtn1: '发送验证码',
         imgUrl: '',
         form: {
-          ml: '18410208260@163.com',
+          ml: '',
           emailCode: '',
           vcode: ''
         },

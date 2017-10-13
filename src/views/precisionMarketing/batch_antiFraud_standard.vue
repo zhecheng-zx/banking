@@ -52,7 +52,7 @@
             <div class="col-md-5 col-md-offset-4">
               <label>
                 <input type="checkbox" />
-                我已阅读并同意 <a href="/" target="_blank"> 《用户授权协议》</a>
+                我已阅读并同意 <router-link to="/userAgreement" target="_blank"> 《用户授权协议》</router-link>
               </label>
             </div>
           </div>

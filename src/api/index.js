@@ -21,6 +21,12 @@ export function logout() {
   return api.get('/api/authenticate/logout');
 }
 /**
+ * 清除第一次登录显示弹窗
+ */
+export function clause() {
+  return api.get('/api/authenticate/clause');
+}
+/**
  * 反欺诈（标准版）单一查询
  * @param param ({name,idNo,mobile,arctic,payPassword})
  * @returns {*|AxiosPromise}
